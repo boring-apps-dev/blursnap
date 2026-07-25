@@ -1,0 +1,348 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>BlurSnap — animated hero</title>
+<style>
+  :root{
+    --bg:#0b0e14; --panel:#12161f; --panel-2:#161b26;
+    --border:#232a37; --text:#e6e9ef; --muted:#aeb7c8; --faint:#8b93a7;
+    --brand:#3D6FA8; --brand-soft:#B8D8F0;
+    --green:#3fb950; --green-bg:rgba(63,185,80,.14);
+    --red:#f85149;   --red-bg:rgba(248,81,73,.15);
+    --amber:#f0a020; --amber-bg:rgba(240,160,32,.15);
+    --save:#50dc64;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{height:100%}
+  body{background:var(--bg);color:var(--text);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,system-ui,sans-serif;
+    -webkit-font-smoothing:antialiased;height:100vh;overflow:hidden}
+  .mono{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  .stage{display:flex;height:100vh;position:relative;cursor:none;overflow:hidden}
+
+  /* ── screen: the real desktop app ── */
+  .sidebar{width:216px;flex:0 0 216px;background:var(--panel);border-right:1px solid var(--border);
+    display:flex;flex-direction:column;padding:20px 14px}
+  .brand{display:flex;align-items:center;gap:10px;padding:6px 8px 22px}
+  .brand .mark{width:26px;height:26px;border-radius:7px;
+    background:linear-gradient(135deg,var(--brand-soft),var(--brand));
+    display:grid;place-items:center;color:#0b0e14;font-weight:800;font-size:15px}
+  .brand .name{font-weight:650;font-size:15px}
+  .nav{display:flex;flex-direction:column;gap:2px}
+  .nav a{display:flex;align-items:center;gap:11px;padding:9px 10px;border-radius:8px;
+    color:var(--muted);text-decoration:none;font-size:14px;font-weight:500}
+  .nav a .ic{width:16px;height:16px;border-radius:4px;border:1.6px solid currentColor;opacity:.85}
+  .nav a.active{background:rgba(61,111,168,.16);color:var(--brand-soft)}
+  .nav a.active .ic{background:var(--brand-soft);border-color:var(--brand-soft)}
+  .spacer{flex:1}
+  .main{flex:1;display:flex;flex-direction:column;min-width:0}
+  .topbar{height:60px;flex:0 0 60px;border-bottom:1px solid var(--border);
+    display:flex;align-items:center;gap:16px;padding:0 28px}
+  .topbar h1{font-size:17px;font-weight:650}
+  .topbar .count{color:var(--faint);font-size:13px;font-weight:500}
+  .search{margin-left:auto;width:240px;height:34px;border-radius:9px;background:var(--panel-2);
+    border:1px solid var(--border);display:flex;align-items:center;gap:9px;padding:0 12px;color:var(--faint);font-size:13px}
+  .search .dot{width:13px;height:13px;border:1.8px solid currentColor;border-radius:50%}
+  .btn{height:34px;padding:0 14px;border-radius:9px;border:1px solid var(--border);
+    background:var(--brand);color:#fff;font-weight:600;font-size:13px;display:grid;place-items:center}
+  .content{flex:1;padding:22px 28px;overflow:hidden}
+  .card{background:var(--panel);border:1px solid var(--border);border-radius:14px;overflow:hidden}
+
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  thead th{text-align:left;color:#d6dbe5;font-weight:600;font-size:11px;letter-spacing:.5px;
+    text-transform:uppercase;padding:12px 16px;background:var(--panel-2);border-bottom:1px solid var(--border);white-space:nowrap}
+  th.num,td.num{text-align:right}
+  tbody td{padding:11px 16px;border-bottom:1px solid rgba(35,42,55,.6);white-space:nowrap}
+  tbody tr:last-child td{border-bottom:none}
+  .company{display:inline-flex;align-items:center;gap:11px}
+  .logo{width:28px;height:28px;border-radius:8px;display:grid;place-items:center;
+    font-weight:750;font-size:11px;color:#0b0e14;flex:0 0 28px}
+  .nm{font-weight:600}
+  .contact{color:#cfd5e0}
+  .region{color:var(--faint);font-weight:500}
+  .plan{font-weight:500}
+  .mrr{font-weight:650}
+  .seats{color:var(--muted)}
+  .pill{display:inline-flex;align-items:center;gap:6px;padding:3px 10px;border-radius:999px;font-size:11.5px;font-weight:650}
+  .pill::before{content:"";width:6px;height:6px;border-radius:50%;background:currentColor}
+  .pill.active{color:var(--green);background:var(--green-bg)}
+  .pill.past_due{color:var(--red);background:var(--red-bg)}
+  .pill.at_risk{color:var(--amber);background:var(--amber-bg)}
+
+  /* ── dim overlay when editor is open ── */
+  .dim{position:absolute;inset:0;background:rgba(0,0,0,.55);opacity:0;pointer-events:none;
+    transition:opacity .4s ease;z-index:5}
+  .dim.on{opacity:1}
+
+  /* ── capture selection ── */
+  .selrect{position:absolute;left:0;top:0;width:0;height:0;border:1.5px solid #fff;
+    box-shadow:0 0 0 9999px rgba(0,0,0,.45);opacity:0;z-index:6;pointer-events:none}
+  .selrect.on{opacity:1}
+  .selrect .size{position:absolute;left:2px;top:-22px;font-size:11px;color:#fff;
+    background:rgba(0,0,0,.6);padding:1px 6px;border-radius:4px;font-family:ui-monospace,monospace;white-space:nowrap}
+  .cross{position:absolute;width:22px;height:22px;margin:-11px 0 0 -11px;z-index:7;opacity:0;pointer-events:none;
+    transition:opacity .2s ease}
+  .cross::before,.cross::after{content:"";position:absolute;background:rgba(255,255,255,.9)}
+  .cross::before{left:10px;top:0;width:1.5px;height:22px}
+  .cross::after{top:10px;left:0;height:1.5px;width:22px}
+  .cross.on{opacity:1}
+
+  /* ── editor window ── */
+  .editor{position:absolute;left:50%;top:52%;transform:translate(-50%,-50%) scale(.94);
+    width:min(94vw,940px);background:#141414;border:1px solid #000;border-radius:10px;
+    box-shadow:0 24px 70px rgba(0,0,0,.6);opacity:0;pointer-events:none;z-index:8;
+    transition:opacity .35s ease,transform .35s cubic-bezier(.2,.7,.3,1);overflow:hidden}
+  .editor.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+  /* native-style Windows dark title bar */
+  .titlebar{height:32px;background:#202124;display:flex;align-items:center;gap:9px;
+    padding:0 0 0 11px;border-bottom:1px solid #000;color:#dfe3ea;font-size:12px}
+  .titlebar .ico{width:16px;height:16px;border-radius:3px;flex:0 0 16px;object-fit:cover}
+  .caption{margin-left:auto;display:flex;height:100%}
+  .cap{width:44px;height:100%;display:grid;place-items:center;color:#c7ccd6;font-size:11px}
+  .cap.close{font-size:12px}
+  .viewport{background:#141414}
+  .viewport .card{border-radius:0;border:none;background:#141414}
+  .statusbar{height:42px;background:#1a1a1a;border-top:1px solid #000;display:flex;align-items:center;
+    padding:0 12px;gap:12px;color:#8b93a7;font-size:11.5px;font-family:ui-monospace,monospace}
+  #hint.saved{color:var(--save)}
+  .statusbar .grow{flex:1}
+  .sb-btn{width:26px;height:26px;border-radius:3px;background:#282828;display:grid;place-items:center;color:var(--brand-soft);font-size:13px}
+  .shape-sq{width:12px;height:12px;background:var(--brand-soft);border-radius:2px}
+  .sb-size{color:var(--brand-soft);font-family:inherit;min-width:38px;text-align:center;font-size:12px}
+  .done{height:32px;padding:0 36px;border-radius:2px;background:var(--brand-soft);color:#0b0e14;
+    font-weight:700;font-size:13px;display:grid;place-items:center;font-family:-apple-system,system-ui,sans-serif}
+
+  /* ── blur / reveal (inside editor) — INSTANT, exactly like the app's mask (no transition, no bloom) ── */
+  .b{display:inline-block;filter:blur(5px)}
+  .b.show{filter:none}
+
+  /* ── brush cursor: hollow outline (white edge + dark halo), like the real app; no pressed state ── */
+  .brush{position:absolute;top:0;left:0;width:38px;height:38px;margin:-19px 0 0 -19px;border-radius:2px;
+    border:1.5px solid rgba(255,255,255,.92);background:transparent;
+    box-shadow:0 0 0 1.5px rgba(0,0,0,.5),0 2px 8px rgba(0,0,0,.4);
+    pointer-events:none;opacity:0;z-index:9;
+    transition:left .42s cubic-bezier(.4,0,.2,1),top .42s cubic-bezier(.4,0,.2,1),opacity .3s ease}
+  .brush.on{opacity:1}
+
+  /* ── hand pointer: shown over UI buttons (Done), where the real app shows the OS hand cursor ── */
+  .hand{position:absolute;top:0;left:0;width:28px;height:34px;margin:-2px 0 0 -14px;opacity:0;pointer-events:none;z-index:11;
+    filter:drop-shadow(0 2px 3px rgba(0,0,0,.55));
+    transition:left .45s cubic-bezier(.4,0,.2,1),top .45s cubic-bezier(.4,0,.2,1),opacity .2s ease,transform .12s ease}
+  .hand.on{opacity:1}
+  .hand.click{transform:translateY(2px) scale(.92)}
+</style>
+</head>
+<body>
+  <div class="stage" id="stage">
+    <!-- desktop app (the user's real screen) -->
+    <aside class="sidebar">
+      <div class="brand"><div class="mark">◆</div><div class="name">Northwind</div></div>
+      <nav class="nav">
+        <a href="#"><span class="ic"></span>Dashboard</a>
+        <a href="#" class="active"><span class="ic"></span>Accounts</a>
+        <a href="#"><span class="ic"></span>Revenue</a>
+        <a href="#"><span class="ic"></span>Reports</a>
+        <a href="#"><span class="ic"></span>Settings</a>
+      </nav>
+      <div class="spacer"></div>
+    </aside>
+    <main class="main">
+      <header class="topbar">
+        <h1>Accounts</h1><span class="count">10 partners</span>
+        <div class="search"><span class="dot"></span>Search accounts…</div>
+        <div class="btn">Export</div>
+      </header>
+      <div class="content">
+        <div class="card" id="screenCard">
+          <table><thead><tr id="sHead"></tr></thead><tbody id="sBody"></tbody></table>
+        </div>
+      </div>
+    </main>
+
+    <div class="dim" id="dim"></div>
+    <div class="selrect" id="sel"><span class="size" id="selsize">0 × 0</span></div>
+    <div class="cross" id="cross"></div>
+
+    <!-- editor window (opens from the capture) -->
+    <div class="editor" id="editor">
+      <div class="titlebar">
+        <img class="ico" src="icon.png" alt="">
+        <span class="tt">BlurSnap — Editor</span>
+        <div class="caption"><span class="cap">─</span><span class="cap">▢</span><span class="cap close">✕</span></div>
+      </div>
+      <div class="viewport">
+        <div class="card">
+          <table><thead><tr id="eHead"></tr></thead><tbody id="eBody"></tbody></table>
+        </div>
+      </div>
+      <div class="statusbar">
+        <span id="hint">[ ] size · Ctrl+Z undo · Ctrl+Y redo · Enter — save + copy · Esc — cancel</span>
+        <span class="grow"></span>
+        <span class="sb-btn"><span class="shape-sq"></span></span><span class="sb-btn">−</span><span class="sb-size">15 px</span><span class="sb-btn">+</span>
+        <span class="done" id="done">Done</span>
+      </div>
+    </div>
+
+    <div class="brush" id="brush"></div>
+    <div class="hand" id="hand">
+      <svg viewBox="0 0 28 34" width="28" height="34" xmlns="http://www.w3.org/2000/svg">
+        <path d="M12 3.2c0-1 .8-1.8 1.8-1.8s1.8.8 1.8 1.8V13l.8-.1c.2-1 .9-1.7 1.9-1.7 1 0 1.9.8 1.9 1.9l.9.1c.1-.9.9-1.6 1.8-1.6 1 0 1.9.8 1.9 1.9v5.1c0 4.2-3.1 7.6-7.3 7.6h-1.9c-2 0-3.9-.8-5.3-2.3l-4.4-4.7c-.7-.8-.7-2 .1-2.7.7-.6 1.8-.6 2.5.1l1.8 1.7V3.2z"
+          fill="#f7f7f7" stroke="#161616" stroke-width="1.3" stroke-linejoin="round"/>
+      </svg>
+    </div>
+  </div>
+
+<script>
+  const HDR = ['Company','Contact','Region','Plan','MRR','Seats','Status'];
+  const rows = [
+    {lg:'NL',c:'#7aa2f7',co:'Nordwind Logistics',ct:'Sarah Whitfield',rg:'EMEA',pl:'Business',mrr:'$4,200',se:'45',st:'active'},
+    {lg:'BM',c:'#bb9af7',co:'BrightPeak Media',   ct:'Marcus Lee',    rg:'AMER',pl:'Pro',     mrr:'$1,800',se:'18',st:'active'},
+    {lg:'SR',c:'#f7768e',co:'Sakura Retail',      ct:'Yuki Tanaka',   rg:'APAC',pl:'Business',mrr:'$5,600',se:'62',st:'past_due',t:1},
+    {lg:'DH',c:'#73daca',co:'Delta Health Partners',ct:'Emma Johansson',rg:'EMEA',pl:'Enterprise',mrr:'$12,400',se:'140',st:'active'},
+    {lg:'VE',c:'#e0af68',co:'Volta Energy',        ct:'Diego Ramirez', rg:'EMEA',pl:'Pro',     mrr:'$2,100',se:'22',st:'active'},
+    {lg:'CF',c:'#7dcfff',co:'Coral Fintech',       ct:'Fatima Al-Sayed',rg:'MEA',pl:'Business',mrr:'$3,900',se:'40',st:'active'},
+    {lg:'IC',c:'#9ece6a',co:'Ironwood Consulting', ct:"James O'Brien", rg:'AMER',pl:'Pro',     mrr:'$1,500',se:'12',st:'at_risk',t:1},
+    {lg:'ML',c:'#b4a1e8',co:'Meridian Labs',       ct:'Rajesh Kapoor', rg:'APAC',pl:'Business',mrr:'$4,700',se:'51',st:'active'},
+    {lg:'AS',c:'#f7a072',co:'Aurora Studios',      ct:'Chloe Martin',  rg:'EMEA',pl:'Free',    mrr:'$0',    se:'3', st:'active'},
+    {lg:'SF',c:'#ff9e64',co:'Summit Freight',      ct:'Ahmed Hassan',  rg:'MEA',pl:'Enterprise',mrr:'$15,800',se:'175',st:'at_risk',t:1},
+  ];
+
+  function fillHead(tr){
+    HDR.forEach((h,i)=>{
+      const th=document.createElement('th'); if(i===4||i===5) th.className='num';
+      th.innerHTML = `<span class="h">${h}</span>`; tr.appendChild(th);
+    });
+  }
+  function fillBody(tb, blur){
+    rows.forEach((r,ri)=>{
+      const w = blur ? 'b' : 'h';
+      const tr=document.createElement('tr');
+      tr.innerHTML = `
+        <td><span class="${w}"><span class="company"><span class="logo" style="background:${r.c}">${r.lg}</span><span class="nm">${r.co}</span></span></span></td>
+        <td><span class="${w} contact">${r.ct}</span></td>
+        <td><span class="${w} region">${r.rg}</span></td>
+        <td><span class="${w} plan">${r.pl}</span></td>
+        <td class="num"><span class="${w} mono mrr" data-mrr="${ri}">${r.mrr}</span></td>
+        <td class="num"><span class="${w} mono seats">${r.se}</span></td>
+        <td><span class="${w}" data-st="${ri}"><span class="pill ${r.st}">${r.st}</span></span></td>`;
+      tb.appendChild(tr);
+    });
+  }
+  fillHead(document.getElementById('sHead')); fillBody(document.getElementById('sBody'), false);
+  fillHead(document.getElementById('eHead')); fillBody(document.getElementById('eBody'), true);
+
+  const eBody = document.getElementById('eBody');
+  const hdrSpans = [...document.querySelectorAll('#eHead .h')].map(s=>{ s.classList.add('b'); return s; });
+  const targets = [];
+  rows.forEach((r,ri)=>{ if(!r.t) return;
+    targets.push(eBody.querySelector(`[data-mrr="${ri}"]`));
+    targets.push(eBody.querySelector(`[data-st="${ri}"]`));
+  });
+
+  // ── elements ──
+  const stage=document.getElementById('stage'), dim=document.getElementById('dim');
+  const sel=document.getElementById('sel'), selsize=document.getElementById('selsize'), cross=document.getElementById('cross');
+  const editor=document.getElementById('editor'), brush=document.getElementById('brush'), hand=document.getElementById('hand');
+  const statusbar=document.querySelector('.statusbar');
+  const hint=document.getElementById('hint'), doneBtn=document.getElementById('done');
+  const screenCard=document.getElementById('screenCard');
+  const HINT = hint.textContent;
+  const SAVED = 'Saved: Screenshot_20260724_142309.png  ·  Copied to clipboard';
+  const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+  const rel=el=>{const s=stage.getBoundingClientRect(),r=el.getBoundingClientRect();
+    return {x:r.left-s.left,y:r.top-s.top,w:r.width,h:r.height,cx:r.left-s.left+r.width/2,cy:r.top-s.top+r.height/2};};
+  function bMove(ms){brush.style.transition=`left ${ms}ms cubic-bezier(.4,0,.2,1),top ${ms}ms cubic-bezier(.4,0,.2,1),opacity .3s ease,background .16s ease,transform .16s ease`;}
+  function bTo(x,y){brush.style.left=x+'px';brush.style.top=y+'px';}
+  const press=on=>{};  // real cursor has no pressed state — keep the demo honest
+
+  // ── phases ──
+  async function capture(){
+    const c = rel(screenCard);
+    const x0=c.x, y0=c.y;                 // align exactly to the table card: full header, left edge
+    cross.style.left=x0+'px'; cross.style.top=y0+'px'; cross.classList.add('on');
+    sel.style.left=x0+'px'; sel.style.top=y0+'px'; sel.style.width='0px'; sel.style.height='0px'; sel.classList.add('on');
+    await sleep(250);
+    const W=c.w, H=c.h, steps=26;         // capture the whole table = exactly what the editor shows
+    for(let i=1;i<=steps;i++){
+      const w=W*i/steps, h=H*i/steps;
+      sel.style.width=w+'px'; sel.style.height=h+'px';
+      cross.style.left=(x0+w)+'px'; cross.style.top=(y0+h)+'px';
+      selsize.textContent = Math.round(w)+' × '+Math.round(h);
+      await sleep(34);
+    }
+    await sleep(260);
+    cross.classList.remove('on'); sel.classList.remove('on');
+  }
+  async function openEditor(){
+    dim.classList.add('on'); editor.classList.add('on');
+    await sleep(520);
+  }
+  async function headerSwipe(){
+    const cells = hdrSpans.map(s=>rel(s));
+    const startX = cells[0].cx-24, endX = cells[cells.length-1].cx+24, y = cells[0].cy, D = 1050;
+    bMove(0); bTo(startX,y); await sleep(40);
+    brush.classList.add('on'); await sleep(280);
+    // linear sweep so each column can be revealed exactly as the cursor reaches it
+    brush.style.transition = `left ${D}ms linear,top ${D}ms linear,opacity .3s ease`;
+    bTo(endX,y);
+    cells.forEach((c,i)=>{
+      const t = D * (c.cx - startX) / (endX - startX);
+      setTimeout(()=>hdrSpans[i].classList.add('show'), Math.max(0,t));
+    });
+    await sleep(D+90);
+  }
+  async function paintCell(el){
+    const p=rel(el);
+    bMove(400); bTo(p.cx-p.w/2-8,p.cy); await sleep(420);
+    press(true); await sleep(70);
+    bMove(400); bTo(p.cx+p.w/2+8,p.cy);
+    await sleep(120); el.classList.add('show');
+    await sleep(260); press(false); await sleep(110);
+  }
+  async function save(){
+    const d = rel(doneBtn);
+    const boundaryY = rel(statusbar).y;                 // where the canvas ends and the control panel begins
+    await sleep(300);
+    // brush glides down the Status column toward Done, still over the canvas…
+    bMove(430); bTo(d.cx, boundaryY-5); await sleep(450);
+    // …and at the exact boundary it swaps sharply: brush off, hand on, same spot
+    brush.style.transition='none'; brush.classList.remove('on');
+    hand.style.transition='none';
+    hand.style.left=d.cx+'px'; hand.style.top=(boundaryY-5)+'px';
+    hand.classList.add('on');
+    void hand.offsetWidth;
+    hand.style.transition='left .3s cubic-bezier(.4,0,.2,1),top .3s cubic-bezier(.4,0,.2,1),transform .12s ease';
+    hand.style.left=d.cx+'px'; hand.style.top=d.cy+'px';   // hand continues onto Done
+    await sleep(320);
+    hand.classList.add('click'); await sleep(150); hand.classList.remove('click');   // click Done
+    hint.textContent = SAVED; hint.classList.add('saved');  // hints → green saved text
+    await sleep(1500);
+    hand.classList.remove('on');
+    editor.classList.remove('on'); dim.classList.remove('on');
+    await sleep(500);
+  }
+  function reset(){
+    hdrSpans.forEach(s=>s.classList.remove('show'));
+    targets.forEach(s=>s.classList.remove('show'));
+    brush.classList.remove('on','paint');
+    hand.classList.remove('on','click');
+    editor.classList.remove('on'); dim.classList.remove('on');
+    sel.classList.remove('on'); cross.classList.remove('on');
+    hint.textContent = HINT; hint.classList.remove('saved');
+  }
+  async function runOnce(){
+    reset(); await sleep(600);
+    await capture();
+    await openEditor();
+    await headerSwipe();
+    for(const el of targets) await paintCell(el);
+    await save();
+    await sleep(500);
+  }
+  (async ()=>{ while(true){ await runOnce(); } })();
+</script>
+</body>
+</html>

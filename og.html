@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<style>
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{width:1200px;height:630px;overflow:hidden}
+  body{
+    font-family:'Segoe UI',-apple-system,system-ui,sans-serif;
+    background:linear-gradient(135deg,#B8D8F0 0%,#C4E4EE 42%,#C0ECE4 100%);
+    color:#1a2030;position:relative;
+  }
+  .wrap{display:flex;height:100%;align-items:center}
+  .left{width:560px;flex:0 0 560px;padding:0 0 0 72px;z-index:2}
+  .brand{display:flex;align-items:center;gap:14px;margin-bottom:34px}
+  .brand img{width:52px;height:52px;border-radius:12px;box-shadow:0 3px 12px rgba(0,0,0,.18)}
+  .brand span{font-size:30px;font-weight:700;letter-spacing:-.5px}
+  h1{font-size:58px;font-weight:700;line-height:1.06;letter-spacing:-2px;margin-bottom:24px}
+  h1 .accent{color:#3d6fa8}
+  p{font-size:23px;font-weight:500;color:#3a4558;line-height:1.4;max-width:470px}
+  .badge{display:inline-block;margin-top:30px;font-size:16px;font-weight:600;
+    color:#3d6fa8;background:rgba(61,111,168,.12);border:1px solid rgba(61,111,168,.25);
+    padding:8px 18px;border-radius:999px;letter-spacing:.2px}
+  /* product shot bleeding off the right edge */
+  .shot{position:absolute;right:-60px;top:50%;transform:translateY(-50%) rotate(-3deg);
+    width:720px;border-radius:16px;overflow:hidden;background:#0b0e14;
+    border:1px solid rgba(255,255,255,.6);
+    box-shadow:0 40px 90px rgba(20,40,70,.38)}
+  .shot img{display:block;width:100%;height:auto}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="left">
+      <div class="brand">
+        <img src="favicon.png" alt="">
+        <span>BlurSnap</span>
+      </div>
+      <h1>Blur everything.<br><span class="accent">Reveal only what matters.</span></h1>
+      <p>Share screenshots fast — without leaking sensitive data.</p>
+      <div class="badge">Windows 10 / 11 &nbsp;·&nbsp; $9.99 one-time</div>
+    </div>
+  </div>
+  <div class="shot"><img src="how-2-paint.png" alt=""></div>
+</body>
+</html>

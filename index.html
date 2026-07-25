@@ -1,0 +1,1289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>BlurSnap — Blur everything, reveal only what matters</title>
+  <meta name="description" content="Accidentally leaking passwords, emails or private data in a screenshot? BlurSnap blurs the whole capture the moment you take it — then you paint over only what you want to show. A fast, private screenshot tool for Windows 10 & 11. $9.99 one-time, no subscription.">
+  <meta name="keywords" content="blur screenshot, redact screenshot, hide sensitive data in screenshot, censor screenshot, screenshot privacy tool, hide passwords in screenshot, blur tool Windows, screenshot editor">
+  <meta name="author" content="Boring Apps">
+  <meta name="robots" content="index, follow">
+  <meta name="theme-color" content="#B8D8F0">
+  <link rel="canonical" href="https://blursnap.app/">
+  <link rel="icon" type="image/png" href="favicon.png">
+
+  <!-- Open Graph / social preview -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="BlurSnap">
+  <meta property="og:title" content="BlurSnap — Blur everything. Reveal only what matters.">
+  <meta property="og:description" content="Share screenshots fast — without leaking sensitive data. BlurSnap blurs everything the moment you capture; paint over just what you want to show.">
+  <meta property="og:url" content="https://blursnap.app/">
+  <meta property="og:image" content="https://blursnap.app/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:image:alt" content="BlurSnap editor with a blurred spreadsheet — only the important cells revealed.">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="BlurSnap — Blur everything. Reveal only what matters.">
+  <meta name="twitter:description" content="Share screenshots fast — without leaking sensitive data. A fast, private Windows screenshot tool.">
+  <meta name="twitter:image" content="https://blursnap.app/og-image.png">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg-grad-start: #B8D8F0;
+      --bg-grad-end:   #C0ECE4;
+      --text-pri:  #1a2030;
+      --text-sec:  #3a4558;
+      --text-dim:  #6b7a92;
+      --accent:    #3d6fa8;
+      --accent-hov:#2f5a8a;
+      --card-bg:   rgba(255,255,255,0.55);
+      --card-border: rgba(255,255,255,0.7);
+      --header-bg: rgba(255,255,255,0.25);
+    }
+
+    html { scroll-padding-top: 76px; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text-pri);
+      background: linear-gradient(135deg, var(--bg-grad-start) 0%, #C4E4EE 40%, var(--bg-grad-end) 100%);
+      min-height: 100vh;
+    }
+
+    /* ── Scrollbar (brand) ──────────────────────────── */
+    html { scrollbar-width: thin; scrollbar-color: var(--accent) rgba(255,255,255,0.35); }
+    ::-webkit-scrollbar { width: 12px; height: 12px; }
+    ::-webkit-scrollbar-track { background: rgba(255,255,255,0.35); }
+    ::-webkit-scrollbar-thumb {
+      background: linear-gradient(var(--accent), var(--accent-hov));
+      border-radius: 10px;
+      border: 3px solid transparent;
+      background-clip: padding-box;
+    }
+    ::-webkit-scrollbar-thumb:hover {
+      background: linear-gradient(var(--accent-hov), var(--accent-hov));
+      background-clip: padding-box;
+      border: 3px solid transparent;
+    }
+
+    /* ── Header ─────────────────────────────────────── */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      background: var(--header-bg);
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+    }
+
+    .header-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-size: 18px;
+      font-weight: 700;
+      color: var(--text-pri);
+      text-decoration: none;
+      letter-spacing: -0.3px;
+    }
+
+    nav {
+      display: flex;
+      align-items: center;
+      gap: 32px;
+    }
+
+    nav a {
+      font-size: 14px;
+      font-weight: 500;
+      color: var(--text-sec);
+      text-decoration: none;
+      transition: color 0.15s;
+    }
+
+    nav a:hover { color: var(--text-pri); }
+
+    .btn-buy-sm {
+      font-size: 14px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 8px;
+      padding: 8px 20px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s;
+    }
+
+    .btn-buy-sm:hover { background: var(--accent-hov); }
+
+    /* ── Layout container — single source of truth for content width ── */
+    main {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 32px;
+    }
+
+    /* ── Sections ────────────────────────────────────── */
+    section {
+      padding: 96px 0;
+    }
+
+    /* ── Hero ────────────────────────────────────────── */
+    #hero {
+      display: flex;
+      align-items: center;
+      gap: 64px;
+      padding: 112px 0 96px;
+    }
+
+    .hero-text { flex: 1; }
+
+    .hero-label {
+      display: inline-block;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 16px;
+    }
+
+    .hero-title {
+      font-size: 52px;
+      font-weight: 700;
+      line-height: 1.1;
+      letter-spacing: -1.5px;
+      color: var(--text-pri);
+      margin-bottom: 20px;
+    }
+
+    .hero-title .ht-line { display: block; }
+    .hero-title .ht-balance { text-wrap: balance; }
+
+    .hero-subtitle {
+      font-size: 20px;
+      font-weight: 500;
+      color: var(--text-sec);
+      margin-bottom: 16px;
+      line-height: 1.4;
+      text-wrap: balance;
+    }
+
+    .hero-desc {
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 1.7;
+      margin-bottom: 40px;
+      max-width: 440px;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+      align-items: flex-start;
+    }
+
+    .hero-dl-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 6px;
+    }
+
+    .btn-meta {
+      font-size: 12px;
+      font-weight: 400;
+      color: var(--text-dim);
+      padding-left: 10px;
+    }
+
+    .btn-primary {
+      font-size: 15px;
+      font-weight: 600;
+      color: #fff;
+      background: var(--accent);
+      border: none;
+      border-radius: 10px;
+      padding: 14px 28px;
+      cursor: pointer;
+      text-decoration: none;
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-primary:hover { background: var(--accent-hov); transform: translateY(-1px); }
+
+    .btn-secondary {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-pri);
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 10px;
+      padding: 13px 27px;
+      cursor: pointer;
+      text-decoration: none;
+      backdrop-filter: blur(8px);
+      transition: background 0.15s, transform 0.1s;
+    }
+
+    .btn-secondary:hover { background: rgba(255,255,255,0.7); transform: translateY(-1px); }
+
+    .hero-media {
+      flex: 1.25;
+      display: flex;
+      justify-content: center;
+    }
+
+    .demo-frame {
+      width: 100%;
+      max-width: 680px;
+      aspect-ratio: 1280 / 800;
+      border-radius: 14px;
+      overflow: hidden;
+      position: relative;
+      background: #0b0e14;
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 22px 55px rgba(20, 40, 70, 0.28);
+    }
+
+    .demo-frame iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 1280px;
+      height: 800px;
+      border: 0;
+      transform-origin: top left;
+      /* non-interactive auto-playing demo: let the mouse pass through so the
+         real cursor stays visible instead of hitting the iframe's cursor:none */
+      pointer-events: none;
+    }
+
+    /* ── Features ────────────────────────────────────── */
+    .section-label {
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1.2px;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 12px;
+    }
+
+    .section-title {
+      font-size: 36px;
+      font-weight: 700;
+      letter-spacing: -0.8px;
+      color: var(--text-pri);
+      margin-bottom: 56px;
+    }
+
+    .features-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    .feature-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 16px;
+      padding: 28px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .feature-icon {
+      width: 44px;
+      height: 44px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(61, 111, 168, 0.1);
+      border-radius: 12px;
+      margin-bottom: 16px;
+      color: var(--accent);
+    }
+
+    .feature-icon svg {
+      width: 22px;
+      height: 22px;
+      stroke: var(--accent);
+    }
+
+    .feature-title {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--text-pri);
+      margin-bottom: 8px;
+    }
+
+    .feature-desc {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    /* ── Alternating blocks ──────────────────────────── */
+    .alt-blocks { display: flex; flex-direction: column; gap: 80px; }
+
+    .alt-block {
+      display: flex;
+      align-items: center;
+      gap: 64px;
+    }
+
+    .alt-block.reverse { flex-direction: row-reverse; }
+
+    .alt-block-text { flex: 1; }
+
+    .alt-block-text h3 {
+      font-size: 28px;
+      font-weight: 700;
+      letter-spacing: -0.5px;
+      color: var(--text-pri);
+      margin-bottom: 14px;
+    }
+
+    .alt-block-text p {
+      font-size: 16px;
+      color: var(--text-dim);
+      line-height: 1.7;
+    }
+
+    .alt-block-media {
+      flex: 1;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #0b0e14;
+      border: 1px solid rgba(255,255,255,0.55);
+      box-shadow: 0 2px 6px rgba(20, 40, 70, 0.10), 0 12px 28px rgba(20, 40, 70, 0.20), 0 28px 60px rgba(20, 40, 70, 0.24);
+      line-height: 0;
+    }
+
+    .alt-block-media img {
+      width: 100%;
+      height: auto;
+      display: block;
+      cursor: zoom-in;
+    }
+
+    /* ── Lightbox ────────────────────────────────────── */
+    .lightbox {
+      position: fixed;
+      inset: 0;
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 40px;
+      background: rgba(12, 20, 34, 0.72);
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+      cursor: zoom-out;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transition: opacity 0.32s ease, visibility 0s linear 0.32s;
+    }
+
+    .lightbox.open {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transition: opacity 0.32s ease, visibility 0s linear 0s;
+    }
+
+    .lightbox img {
+      max-width: min(1280px, 94vw);
+      max-height: 90vh;
+      width: auto;
+      height: auto;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,0.5);
+      box-shadow: 0 30px 80px rgba(0, 0, 0, 0.5);
+      transform: scale(0.94);
+      transition: transform 0.32s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+
+    .lightbox.open img { transform: scale(1); }
+
+    @media (prefers-reduced-motion: reduce) {
+      .lightbox, .lightbox img { transition: none; }
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 22px;
+      right: 28px;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      border: none;
+      background: rgba(255,255,255,0.85);
+      color: #1a2030;
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+      display: grid;
+      place-items: center;
+    }
+
+    .lightbox-close:hover { background: #fff; }
+
+    /* ── Pricing ─────────────────────────────────────── */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 24px;
+      max-width: 720px;
+      margin: 0 auto;
+    }
+
+    .pricing-card {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 36px 32px;
+      backdrop-filter: blur(8px);
+    }
+
+    .pricing-card.featured {
+      background: rgba(61,111,168,0.15);
+      border-color: rgba(61,111,168,0.4);
+    }
+
+    .pricing-label {
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 8px;
+    }
+
+    .pricing-name {
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--text-pri);
+      margin-bottom: 4px;
+    }
+
+    .pricing-price {
+      font-size: 40px;
+      font-weight: 700;
+      color: var(--text-pri);
+      letter-spacing: -1px;
+      margin: 16px 0 24px;
+    }
+
+    .pricing-price span {
+      font-size: 18px;
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+
+    .pricing-features {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      margin-bottom: 32px;
+    }
+
+    .pricing-features li {
+      font-size: 14px;
+      color: var(--text-sec);
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .pricing-features li::before {
+      content: '';
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      background: var(--accent);
+      border-radius: 50%;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M3 8l3.5 3.5L13 5' stroke='white' stroke-width='2' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    }
+
+    .pricing-features li.feature-limit {
+      color: var(--text-dim);
+    }
+
+    .pricing-features li.feature-limit::before {
+      background: var(--text-dim);
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Ccircle cx='8' cy='4.6' r='1.15' fill='white'/%3E%3Cpath d='M8 7.4v4.4' stroke='white' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    }
+
+    .pricing-card .btn-primary,
+    .pricing-card .btn-secondary {
+      width: 100%;
+      text-align: center;
+      display: block;
+    }
+
+    /* ── FAQ ─────────────────────────────────────────── */
+    .faq-list {
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .faq-item {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 24px 28px;
+      backdrop-filter: blur(8px);
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.07);
+    }
+
+    .faq-q {
+      font-size: 15px;
+      font-weight: 600;
+      color: var(--text-pri);
+      margin-bottom: 8px;
+    }
+
+    .faq-a {
+      font-size: 14px;
+      color: var(--text-dim);
+      line-height: 1.6;
+    }
+
+    .faq-link {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .faq-link:hover { text-decoration: underline; }
+
+    /* ── Footer ──────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(255,255,255,0.35);
+      padding: 32px;
+      text-align: center;
+      font-size: 13px;
+      color: var(--text-dim);
+    }
+
+    footer a {
+      color: var(--text-sec);
+      text-decoration: none;
+      margin: 0 10px;
+    }
+
+    footer a:hover { color: var(--text-pri); }
+
+    /* ── Signature "foggy window" overlay ────────────── */
+    .fog {
+      position: fixed;
+      inset: 0;
+      z-index: 900;
+      pointer-events: auto;
+      cursor: grab;
+      backdrop-filter: blur(11px) saturate(112%);
+      -webkit-backdrop-filter: blur(11px) saturate(112%);
+      background: radial-gradient(130% 90% at 32% 12%,
+        rgba(255,255,255,0.40) 0%,
+        rgba(223,238,248,0.30) 55%,
+        rgba(206,228,242,0.34) 100%);
+      -webkit-mask-repeat: no-repeat; mask-repeat: no-repeat;
+      -webkit-mask-size: 100% 100%; mask-size: 100% 100%;
+      mask-mode: alpha;
+      transition: opacity 0.55s ease;
+    }
+    .fog:active { cursor: grabbing; }
+    .fog.cleared { opacity: 0; pointer-events: none; }
+
+    /* Balloon tip — slides in from the right, styled like the app's tray balloon */
+    .fog-hint {
+      position: fixed;
+      z-index: 901;
+      right: 26px; bottom: 30px;
+      width: 236px;
+      display: flex; flex-direction: column; gap: 12px;
+      padding: 15px 16px 14px;
+      background: linear-gradient(135deg, rgba(184,216,240,0.94) 0%, rgba(196,228,238,0.94) 45%, rgba(192,236,228,0.94) 100%);
+      color: #1b2a3d;
+      border: 1px solid rgba(61,111,168,0.22);
+      border-radius: 14px;
+      backdrop-filter: blur(8px) saturate(120%);
+      -webkit-backdrop-filter: blur(8px) saturate(120%);
+      box-shadow: 0 16px 40px rgba(20,45,80,0.22);
+      transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.2,0.8,0.2,1);
+    }
+    /* little downward tail toward the tray corner */
+    .fog-hint::after {
+      content: "";
+      position: absolute;
+      right: 30px; bottom: -7px;
+      width: 14px; height: 14px;
+      background: rgba(192,236,228,0.94);   /* mint end of the gradient, so the tail blends in */
+      border-right: 1px solid rgba(61,111,168,0.22);
+      border-bottom: 1px solid rgba(61,111,168,0.22);
+      border-bottom-right-radius: 3px;
+      transform: rotate(45deg);
+    }
+    .fog-hint-text { margin: 0; font-size: 13px; font-weight: 500; line-height: 1.45; }
+    .fog-hint-text b { font-weight: 700; color: #3D6FA8; }
+    .fog-hint-actions { display: flex; gap: 8px; }
+    .fog-hint button {
+      flex: 1;
+      font: inherit; font-size: 12.5px; font-weight: 600;
+      padding: 7px 10px; border-radius: 8px; cursor: pointer;
+      border: 1px solid transparent;
+      transition: background 0.15s, border-color 0.15s, color 0.15s;
+    }
+    #fogReveal { background: #3D6FA8; color: #fff; border-color: #3D6FA8; }
+    #fogReveal:hover { background: #34618f; }
+    .fog-hint button.ghost { background: transparent; color: #3D6FA8; border-color: rgba(61,111,168,0.38); }
+    .fog-hint button.ghost:hover { background: rgba(61,111,168,0.10); }
+    /* enter = pre-slide-in (off to the right); gone = slide back out */
+    .fog-hint.enter { opacity: 0; transform: translateX(46px); }
+    .fog-hint.gone  { opacity: 0; transform: translateX(46px); pointer-events: none; }
+
+    /* Touch devices never get the overlay (JS also removes it) */
+    @media (hover: none), (pointer: coarse) {
+      .fog, .fog-hint { display: none !important; }
+    }
+
+    /* ── Responsive: tablet ──────────────────────────── */
+    @media (max-width: 900px) {
+      main { padding: 0 24px; }
+      section { padding: 72px 0; }
+
+      #hero {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 40px;
+        padding: 72px 0 64px;
+      }
+      .hero-title { font-size: 42px; }
+      .hero-desc { max-width: none; }
+      .hero-media { justify-content: flex-start; }
+      .demo-frame { max-width: 100%; }
+
+      .features-grid { grid-template-columns: repeat(2, 1fr); }
+
+      .section-title { font-size: 30px; margin-bottom: 40px; }
+
+      .alt-block,
+      .alt-block.reverse { flex-direction: column; gap: 28px; }
+    }
+
+    /* ── Responsive: phone ───────────────────────────── */
+    @media (max-width: 600px) {
+      main { padding: 0 18px; }
+      section { padding: 56px 0; }
+
+      .header-inner { padding: 0 18px; }
+      nav { gap: 14px; }
+      /* Keep only the CTA on phones — sections are reachable by scrolling */
+      nav a:not(.btn-buy-sm) { display: none; }
+      .btn-buy-sm { padding: 8px 16px; }
+
+      #hero { padding: 40px 0 52px; }
+      .hero-title { font-size: 34px; letter-spacing: -1px; }
+      .hero-subtitle { font-size: 18px; }
+      .hero-desc { font-size: 15px; margin-bottom: 32px; }
+
+      .hero-buttons { gap: 12px; }
+      .hero-dl-wrap { width: 100%; }
+      .hero-buttons .btn-primary,
+      .hero-buttons .btn-secondary { width: 100%; text-align: center; }
+
+      .section-title { font-size: 26px; margin-bottom: 32px; }
+      .features-grid { grid-template-columns: 1fr; gap: 16px; }
+      .feature-card { padding: 24px; }
+
+      .alt-block-text h3 { font-size: 24px; }
+
+      .pricing-grid { grid-template-columns: 1fr; gap: 16px; }
+      .pricing-card { padding: 28px 24px; }
+
+      .faq-item { padding: 20px 22px; }
+
+      .lightbox { padding: 16px; }
+      .lightbox-close { top: 12px; right: 14px; }
+    }
+  </style>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@graph": [
+      {
+        "@type": "SoftwareApplication",
+        "name": "BlurSnap",
+        "operatingSystem": "Windows 10, Windows 11",
+        "applicationCategory": "MultimediaApplication",
+        "description": "BlurSnap blurs your screenshot the moment you take it. Paint over what you want to show — everything else stays hidden.",
+        "url": "https://blursnap.app/",
+        "image": "https://blursnap.app/og-image.png",
+        "softwareVersion": "1.0",
+        "offers": {
+          "@type": "Offer",
+          "price": "9.99",
+          "priceCurrency": "USD"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "Boring Apps"
+        }
+      },
+      {
+        "@type": "FAQPage",
+        "mainEntity": [
+          {
+            "@type": "Question",
+            "name": "How do I hide sensitive information before sharing a screenshot?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Take the screenshot with BlurSnap and the whole image is blurred instantly — passwords, emails, account numbers and any personal data are hidden by default. Then paint over only the parts you want to show and save. Nothing sensitive is revealed unless you choose to reveal it." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I blur or redact just part of a screenshot?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes — that's exactly what BlurSnap is built for. Instead of hunting down every detail to blur and risking you miss one, it blurs everything and lets you reveal only what you need with a brush. The sensitive areas stay redacted by default." }
+          },
+          {
+            "@type": "Question",
+            "name": "Is there a subscription?",
+            "acceptedAnswer": { "@type": "Answer", "text": "No. BlurSnap is a one-time purchase. You get lifetime access and all future updates for free." }
+          },
+          {
+            "@type": "Question",
+            "name": "Which Windows versions are supported?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Windows 10 and Windows 11 (64-bit)." }
+          },
+          {
+            "@type": "Question",
+            "name": "Does it need an internet connection?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Only to activate your license key and for occasional license validation. Your screenshots are never uploaded anywhere." }
+          },
+          {
+            "@type": "Question",
+            "name": "Can I use it on a new computer?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Yes. Open Settings, click Deactivate, then install BlurSnap on your new machine and enter the same key. One active device at a time." }
+          },
+          {
+            "@type": "Question",
+            "name": "What if I lose my license key?",
+            "acceptedAnswer": { "@type": "Answer", "text": "Your key is sent to your email right after purchase. Check your inbox or spam folder. Still can't find it? Contact support@blursnap.app." }
+          },
+          {
+            "@type": "Question",
+            "name": "Why does Windows show a security warning?",
+            "acceptedAnswer": { "@type": "Answer", "text": "As a new indie app, BlurSnap doesn't yet have a Microsoft code-signing certificate. Click More info then Run anyway to proceed. You can also view the VirusTotal report or scan it yourself." }
+          }
+        ]
+      }
+    ]
+  }
+  </script>
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
+</head>
+<body>
+
+  <!-- Signature "foggy window" blur overlay (desktop pointer only; JS removes it on touch / reduced-motion) -->
+  <div id="fog" class="fog" aria-hidden="true"></div>
+  <div id="fogHint" class="fog-hint enter" aria-hidden="true">
+    <p class="fog-hint-text"><b>Hold left-click</b> and paint to reveal</p>
+    <div class="fog-hint-actions">
+      <button type="button" id="fogReveal">Reveal all</button>
+      <button type="button" id="fogReset" class="ghost">Reset</button>
+    </div>
+  </div>
+
+  <!-- Header -->
+  <header>
+    <div class="header-inner">
+      <a href="#" class="logo">
+        <img src="favicon.png" alt="" width="32" height="32" style="border-radius:7px;vertical-align:middle;margin-right:9px;box-shadow:0 2px 8px rgba(0,0,0,0.15);"><span style="position:relative;top:2px;">BlurSnap</span>
+      </a>
+      <nav>
+        <a href="#features">Features</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#faq">FAQ</a>
+        <a href="#" class="btn-buy-sm">Download Free Trial</a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+
+  <!-- Hero -->
+  <section id="hero">
+    <div class="hero-text">
+      <span class="hero-label">Windows Screenshot Tool</span>
+      <h1 class="hero-title"><span class="ht-line">Blur everything.</span><span class="ht-line ht-balance">Reveal only what matters.</span></h1>
+      <p class="hero-subtitle">Share screenshots fast — without leaking sensitive data.</p>
+      <p class="hero-desc">BlurSnap automatically blurs your screenshot the moment you take it, so sensitive information — passwords, emails, account numbers — is hidden by default. Simply paint over the parts you want to reveal; everything else stays redacted. Works on anything on your screen — code, dashboards, chats. Fast, private, and no external editor required.</p>
+      <div class="hero-buttons">
+        <div class="hero-dl-wrap">
+          <a href="#" class="btn-primary">Download Free Trial</a>
+          <span class="btn-meta">Windows 10 / 11 &nbsp;·&nbsp; 2.6 MB</span>
+        </div>
+        <a href="#pricing" class="btn-secondary">Buy — $9.99</a>
+      </div>
+    </div>
+    <div class="hero-media">
+      <div class="demo-frame">
+        <iframe src="hero-demo.html" title="BlurSnap — blur a screenshot, paint to reveal" scrolling="no" loading="lazy"></iframe>
+      </div>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section id="features">
+    <div class="section-label">Features</div>
+    <div class="section-title">Everything you need, nothing you don't</div>
+    <div class="features-grid">
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="paintbrush"></i></div>
+        <div class="feature-title">Paint to reveal</div>
+        <div class="feature-desc">Brush over the parts you want visible. Everything else stays blurred automatically.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="eye"></i></div>
+        <div class="feature-title">Hold to peek</div>
+        <div class="feature-desc">Not sure what to reveal? Hold a key to see the original underneath, so you know exactly what to paint. Release, and it blurs back.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="zap"></i></div>
+        <div class="feature-title">Global hotkey</div>
+        <div class="feature-desc">One shortcut captures the screen and opens the editor instantly. No clicks needed.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="clipboard-check"></i></div>
+        <div class="feature-title">Auto copy & save</div>
+        <div class="feature-desc">The result is copied to clipboard and saved automatically when you're done.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="shield"></i></div>
+        <div class="feature-title">Privacy by default</div>
+        <div class="feature-desc">Everything runs locally. No cloud, no uploads, no AI processing. Your screenshots never leave your machine.</div>
+      </div>
+      <div class="feature-card">
+        <div class="feature-icon"><i data-lucide="sliders-horizontal"></i></div>
+        <div class="feature-title">Customizable workflow</div>
+        <div class="feature-desc">Set your hotkey, save folder, brush size, and blur intensity. Works exactly the way you want.</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works (alternating blocks) -->
+  <section id="how-it-works">
+    <div class="section-label">How it works</div>
+    <div class="section-title">Three steps, five seconds</div>
+    <div class="alt-blocks">
+
+      <div class="alt-block">
+        <div class="alt-block-text">
+          <h3>Press the hotkey, then select an area</h3>
+          <p>Hit Ctrl+Shift+B (or your custom shortcut) from anywhere, then drag to select the part of your screen you want to share. It opens in the editor with everything blurred, so sensitive data is hidden before you show a single pixel.</p>
+        </div>
+        <div class="alt-block-media"><img src="how-1-capture.png" alt="Selecting a screen region to capture in BlurSnap" loading="lazy"></div>
+      </div>
+
+      <div class="alt-block reverse">
+        <div class="alt-block-text">
+          <h3>Paint to reveal the parts you need</h3>
+          <p>Hold the left mouse button and brush over what you want to show. Adjust brush size and shape. Use Ctrl+Z to undo any brushstroke.</p>
+        </div>
+        <div class="alt-block-media"><img src="how-2-paint.png" alt="Painting with the brush to reveal specific cells while everything else stays blurred" loading="lazy"></div>
+      </div>
+
+      <div class="alt-block">
+        <div class="alt-block-text">
+          <h3>Press Enter — done</h3>
+          <p>The result is saved to a folder and copied to your clipboard automatically. Paste it anywhere, instantly.</p>
+        </div>
+        <div class="alt-block-media"><img src="how-3-saved.png" alt="The finished screenshot saved and copied to clipboard, with only the important cells revealed" loading="lazy"></div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section id="pricing">
+    <div class="section-label">Pricing</div>
+    <div class="section-title" style="text-align:center;">Simple, one-time pricing</div>
+    <div class="pricing-grid">
+
+      <div class="pricing-card">
+        <div class="pricing-label">Free</div>
+        <div class="pricing-name">Trial</div>
+        <div class="pricing-price">$0</div>
+        <ul class="pricing-features">
+          <li>Paint-to-reveal editor</li>
+          <li>Hold-to-peek — see the original</li>
+          <li>No cloud — files stay on your PC</li>
+          <li>Works fully offline</li>
+          <li>Global hotkey (customizable)</li>
+          <li>Auto-copy &amp; auto-save</li>
+          <li>Adjustable brush size &amp; shape</li>
+          <li>Adjustable blur intensity</li>
+          <li>Undo / Redo</li>
+          <li class="feature-limit">14 days · 30 screenshots</li>
+          <li class="feature-limit">Saved images are watermarked</li>
+        </ul>
+        <a href="#" class="btn-secondary">Download Trial</a>
+      </div>
+
+      <div class="pricing-card featured">
+        <div class="pricing-label">One-time</div>
+        <div class="pricing-name">License</div>
+        <div class="pricing-price">$9.99</div>
+        <ul class="pricing-features">
+          <li>Paint-to-reveal editor</li>
+          <li>Hold-to-peek — see the original</li>
+          <li>No watermark</li>
+          <li>No cloud — files stay on your PC</li>
+          <li>Works fully offline</li>
+          <li>Global hotkey (customizable)</li>
+          <li>Auto-copy &amp; auto-save</li>
+          <li>Adjustable brush size &amp; shape</li>
+          <li>Adjustable blur intensity</li>
+          <li>Undo / Redo</li>
+          <li>One-time payment, no subscription</li>
+          <li>Lifetime license, free updates</li>
+        </ul>
+        <a href="#" class="btn-primary">Buy Now</a>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section id="faq">
+    <div class="section-label">FAQ</div>
+    <div class="section-title">Common questions</div>
+    <div class="faq-list">
+
+      <div class="faq-item">
+        <div class="faq-q">How do I hide sensitive information before sharing a screenshot?</div>
+        <div class="faq-a">Take the screenshot with BlurSnap and the whole image is blurred instantly — passwords, emails, account numbers and any personal data are hidden by default. Then paint over only the parts you actually want to show and save. Nothing sensitive is revealed unless you choose to reveal it.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I blur or redact just part of a screenshot?</div>
+        <div class="faq-a">Yes — that's exactly what BlurSnap is built for. Instead of hunting down every detail to blur (and risking you miss one), it blurs everything and lets you reveal only what you need with a brush. The sensitive areas stay redacted by default.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Is there a subscription?</div>
+        <div class="faq-a">No. BlurSnap is a one-time purchase. You get lifetime access and all future updates for free.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Which Windows versions are supported?</div>
+        <div class="faq-a">Windows 10 and Windows 11 (64-bit).</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Does it need an internet connection?</div>
+        <div class="faq-a">Only to activate your license key and for occasional license validation. Your screenshots are never uploaded anywhere.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Can I use it on a new computer?</div>
+        <div class="faq-a">Yes. Open Settings, click "Deactivate", then install BlurSnap on your new machine and enter the same key. One active device at a time.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">What if I lose my license key?</div>
+        <div class="faq-a">Your key is sent to your email right after purchase. Check your inbox or spam folder. Still can't find it? Contact us at support@blursnap.app.</div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q">Why does Windows show a security warning?</div>
+        <div class="faq-a">As a new indie app, BlurSnap doesn't yet have a Microsoft code-signing certificate. Click "More info" → "Run anyway" to proceed. No telemetry, no ads, no surprises. You can also <a href="#" class="faq-link">view the VirusTotal report</a> or scan it yourself for peace of mind.</div>
+      </div>
+
+    </div>
+  </section>
+
+  </main>
+
+  <!-- Lightbox (click a "How it works" screenshot to enlarge) -->
+  <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="Enlarged screenshot">
+    <button class="lightbox-close" id="lightboxClose" aria-label="Close">&times;</button>
+    <img id="lightboxImg" src="" alt="">
+  </div>
+
+  <!-- Footer -->
+  <footer>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <div style="margin-top:12px;">&copy; 2026 Boring Apps. All rights reserved.</div>
+  </footer>
+
+  <script>
+    if (window.lucide) lucide.createIcons();
+    (function () {
+      function scaleDemo() {
+        document.querySelectorAll('.demo-frame').forEach(function (f) {
+          var iframe = f.querySelector('iframe');
+          if (iframe) iframe.style.transform = 'scale(' + (f.clientWidth / 1280) + ')';
+        });
+      }
+      window.addEventListener('resize', scaleDemo);
+      window.addEventListener('load', scaleDemo);
+      document.addEventListener('DOMContentLoaded', scaleDemo);
+    })();
+
+    // Lightbox: click a "How it works" screenshot to view it full size
+    (function () {
+      var box = document.getElementById('lightbox');
+      var boxImg = document.getElementById('lightboxImg');
+      var closeBtn = document.getElementById('lightboxClose');
+      function open(src, alt) {
+        boxImg.src = src; boxImg.alt = alt || '';
+        box.classList.add('open');
+        document.body.style.overflow = 'hidden';
+      }
+      function close() {
+        box.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+      document.querySelectorAll('.alt-block-media img').forEach(function (img) {
+        img.addEventListener('click', function () { open(img.src, img.alt); });
+      });
+      box.addEventListener('click', function (e) {
+        if (e.target === box || e.target === closeBtn) close();
+      });
+      closeBtn.addEventListener('click', close);
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape' && box.classList.contains('open')) close();
+      });
+    })();
+
+    // Smooth, eased scrolling for in-page nav links
+    (function () {
+      var reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      var HEADER = 76;
+      function ease(t) { return t < 0.5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2; }
+      function scrollToY(targetY) {
+        targetY = Math.max(0, targetY);
+        var startY = window.pageYOffset;
+        var dist = targetY - startY;
+        if (reduce || Math.abs(dist) < 4) { window.scrollTo(0, targetY); return; }
+        var dur = Math.min(900, Math.max(450, Math.abs(dist) * 0.5));
+        var t0 = null;
+        requestAnimationFrame(function step(ts) {
+          if (t0 === null) t0 = ts;
+          var p = Math.min(1, (ts - t0) / dur);
+          window.scrollTo(0, startY + dist * ease(p));
+          if (p < 1) requestAnimationFrame(step);
+        });
+      }
+      document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+        a.addEventListener('click', function (e) {
+          var href = a.getAttribute('href');
+          var targetY;
+          if (href === '#') {
+            targetY = 0;
+          } else {
+            var el = document.querySelector(href);
+            if (!el) return;
+            targetY = el.getBoundingClientRect().top + window.pageYOffset - HEADER;
+          }
+          e.preventDefault();
+          if (href !== '#') history.pushState(null, '', href);
+          scrollToY(targetY);
+        });
+      });
+    })();
+
+    // Signature "foggy window" overlay — hold left-click and wipe to see through
+    (function () {
+      var fog = document.getElementById('fog');
+      var hint = document.getElementById('fogHint');
+      var revealBtn = document.getElementById('fogReveal');
+      if (!fog) return;
+
+      function removeFog() {
+        if (fog && fog.parentNode) fog.parentNode.removeChild(fog);
+        if (hint && hint.parentNode) hint.parentNode.removeChild(hint);
+      }
+
+      // Disable only on touch-first devices (no fine pointer) or when backdrop-filter is unsupported.
+      // Note: NOT gated on reduced-motion — the fog is static, not auto-playing motion.
+      var touchOnly = window.matchMedia('(hover: none), (pointer: coarse)').matches;
+      var hasBackdrop = window.CSS && CSS.supports &&
+        (CSS.supports('backdrop-filter', 'blur(4px)') || CSS.supports('-webkit-backdrop-filter', 'blur(4px)'));
+      if (touchOnly || !hasBackdrop) { removeFog(); return; }
+
+      var SCALE = 0.6;                      // mask resolution factor (soft edges → low-res is fine)
+      var BRUSH_R = 55;                     // interactive brush radius (px, pre-SCALE) — ~25% smaller than before
+      var mask = document.createElement('canvas');
+      var mctx = mask.getContext('2d');
+      var vw = 0, vh = 0, raf = null, dirty = false;
+
+      // One soft, elongated, angled "palm" stamp (partial erase → streaky like real glass)
+      function stamp(x, y, strength, radius) {
+        var r = (radius || BRUSH_R) * SCALE;
+        mctx.save();
+        mctx.globalCompositeOperation = 'destination-out';
+        mctx.translate(x * SCALE, y * SCALE);
+        mctx.rotate(-0.32);                 // ~ -18°
+        mctx.scale(2.0, 1);                 // stretch horizontally → wipe streak
+        var g = mctx.createRadialGradient(0, 0, 0, 0, 0, r);
+        g.addColorStop(0,    'rgba(0,0,0,' + strength + ')');
+        g.addColorStop(0.55, 'rgba(0,0,0,' + (strength * 0.55) + ')');
+        g.addColorStop(1,    'rgba(0,0,0,0)');
+        mctx.fillStyle = g;
+        mctx.beginPath();
+        mctx.arc(0, 0, r, 0, 6.2832);
+        mctx.fill();
+        mctx.restore();
+      }
+
+      // Default diagonal wipes — an inviting "already-open" chunk across the hero.
+      // Uses a wider radius than the interactive brush so the reveal reads clearly.
+      function defaultStreaks() {
+        // A cluster of ~7 parallel palm-wipes — same angle, stacked right next to each other,
+        // like a hand wiped the fog back and forth. All values are viewport fractions.
+        var count  = 7;
+        var slope  = -0.18;   // shared angle for every stroke (tan; negative = up-right)
+        var startX = 0.15;    // left edge of the wiped band
+        var len    = 0.52;    // stroke length
+        var topY   = 0.34;    // vertical start of the first stroke
+        var stepY  = 0.066;   // gap between strokes (small → they sit adjacent)
+        for (var k = 0; k < count; k++) {
+          var x0 = vw * startX;
+          var y0 = vh * (topY + stepY * k);
+          var L  = vw * len;
+          var n  = 54;
+          for (var i = 0; i <= n; i++) {
+            var t = i / n;
+            stamp(x0 + L * t, y0 + L * t * slope, 0.5, 74);
+          }
+        }
+      }
+
+      function apply() {
+        var url = 'url(' + mask.toDataURL() + ')';
+        fog.style.webkitMaskImage = url;
+        fog.style.maskImage = url;
+      }
+      function schedule() {
+        if (raf) return;
+        raf = requestAnimationFrame(function () { raf = null; if (dirty) { dirty = false; apply(); } });
+      }
+
+      function resize() {
+        vw = window.innerWidth; vh = window.innerHeight;
+        var mw = Math.max(2, Math.round(vw * SCALE));
+        var mh = Math.max(2, Math.round(vh * SCALE));
+        mask.width = mw; mask.height = mh;
+        // Don't try to preserve painting as a scaled bitmap — after the layout reflows it
+        // misaligns with the content anyway. The streaks are defined in viewport fractions,
+        // so regenerating them re-lands them cleanly on the new layout (same as Reset).
+        freshFog();
+        apply();
+      }
+
+      // Fill the whole mask with solid, opaque fog — no reveals, a clean "foggy glass".
+      function fillFog() {
+        mctx.globalCompositeOperation = 'source-over';
+        mctx.globalAlpha = 1;
+        mctx.fillStyle = '#fff';            // opaque → fog everywhere
+        mctx.fillRect(0, 0, mask.width, mask.height);
+      }
+
+      // The canonical "fresh" state: solid fog with the inviting default wipes punched in.
+      // Used on load, on resize, and by Reset — so all three land on the same logical state.
+      function freshFog() {
+        fillFog();
+        defaultStreaks();
+      }
+
+      // Reset = back to the fresh invitation (fog + default streaks), ready to paint over.
+      function reset() {
+        if (raf) { cancelAnimationFrame(raf); raf = null; }  // drop any queued frame from painting
+        dirty = false;
+        last = null;
+        fog.classList.remove('cleared');    // in case Reveal all faded it out
+        freshFog();
+        apply();
+      }
+
+      var last = null;
+      function strokeTo(x, y) {
+        if (last) {
+          var dx = x - last.x, dy = y - last.y, d = Math.sqrt(dx * dx + dy * dy);
+          var n = Math.max(1, Math.floor(d / 8));
+          for (var i = 1; i <= n; i++) stamp(last.x + dx * i / n, last.y + dy * i / n, 0.45);
+        } else {
+          stamp(x, y, 0.45);
+        }
+        last = { x: x, y: y };
+        dirty = true;
+        schedule();
+      }
+
+      var down = false, moved = false, downX = 0, downY = 0;
+
+      fog.addEventListener('mousedown', function (e) {
+        if (e.button !== 0) return;
+        down = true; moved = false; downX = e.clientX; downY = e.clientY; last = null;
+        strokeTo(e.clientX, e.clientY);
+        e.preventDefault();
+      });
+      window.addEventListener('mousemove', function (e) {
+        if (!down) return;
+        if (Math.abs(e.clientX - downX) > 4 || Math.abs(e.clientY - downY) > 4) moved = true;
+        strokeTo(e.clientX, e.clientY);
+      });
+      window.addEventListener('mouseup', function (e) {
+        if (!down) return;
+        down = false;
+        if (!moved) {                       // a tap → pass the click through to what's underneath
+          fog.style.pointerEvents = 'none';
+          var el = document.elementFromPoint(e.clientX, e.clientY);
+          fog.style.pointerEvents = '';
+          if (el && typeof el.click === 'function') el.click();
+        }
+      });
+
+      // Balloon stays put — it holds the Reveal/Reset controls. Slide it in on load.
+      if (hint) requestAnimationFrame(function () {
+        requestAnimationFrame(function () { hint.classList.remove('enter'); });
+      });
+
+      if (revealBtn) revealBtn.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        fog.classList.add('cleared');       // fade all fog out, but keep it in the DOM so Reset can restore it
+      });
+      var resetBtn = document.getElementById('fogReset');
+      if (resetBtn) resetBtn.addEventListener('click', function (e) {
+        e.preventDefault(); e.stopPropagation();
+        reset();
+      });
+
+      window.addEventListener('resize', resize);
+      resize();
+    })();
+  </script>
+</body>
+</html>

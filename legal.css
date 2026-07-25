@@ -1,0 +1,164 @@
+/* Shared styles for BlurSnap legal pages (privacy, terms) */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-grad-start: #B8D8F0;
+  --bg-grad-end:   #C0ECE4;
+  --text-pri:  #1a2030;
+  --text-sec:  #3a4558;
+  --text-dim:  #6b7a92;
+  --accent:    #3d6fa8;
+  --accent-hov:#2f5a8a;
+  --card-bg:   rgba(255,255,255,0.6);
+  --card-border: rgba(255,255,255,0.7);
+  --header-bg: rgba(255,255,255,0.25);
+}
+
+html { scroll-behavior: smooth; }
+
+body {
+  font-family: 'Inter', system-ui, sans-serif;
+  color: var(--text-pri);
+  background: linear-gradient(135deg, var(--bg-grad-start) 0%, #C4E4EE 40%, var(--bg-grad-end) 100%);
+  background-attachment: fixed;
+  min-height: 100vh;
+}
+
+/* ── Header ─────────────────────────────────────── */
+header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  background: var(--header-bg);
+  border-bottom: 1px solid rgba(255,255,255,0.4);
+}
+
+.header-inner {
+  max-width: 1080px;
+  margin: 0 auto;
+  padding: 0 32px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.logo {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--text-pri);
+  text-decoration: none;
+  letter-spacing: -0.3px;
+  display: flex;
+  align-items: center;
+}
+
+.logo img { border-radius: 7px; margin-right: 9px; box-shadow: 0 2px 8px rgba(0,0,0,0.15); }
+.logo span { position: relative; top: 2px; }
+
+nav a {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-sec);
+  text-decoration: none;
+  transition: color 0.15s;
+}
+
+nav a:hover { color: var(--text-pri); }
+
+/* ── Legal content card ──────────────────────────── */
+.legal {
+  max-width: 912px;
+  margin: 56px auto 40px;
+  padding: 0 32px;
+}
+
+.legal-card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.08);
+  padding: 48px 48px 40px;
+}
+
+.legal-card h1 {
+  font-size: 34px;
+  font-weight: 700;
+  letter-spacing: -0.8px;
+  margin-bottom: 8px;
+}
+
+.legal-updated {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 36px;
+}
+
+.legal-card h2 {
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--text-pri);
+  margin: 32px 0 12px;
+}
+
+.legal-card p {
+  font-size: 15px;
+  color: var(--text-sec);
+  line-height: 1.7;
+  margin-bottom: 14px;
+}
+
+.legal-card ul {
+  margin: 0 0 14px 20px;
+}
+
+.legal-card li {
+  font-size: 15px;
+  color: var(--text-sec);
+  line-height: 1.7;
+  margin-bottom: 6px;
+}
+
+.legal-card a {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.legal-card a:hover { text-decoration: underline; }
+
+.legal-card strong { color: var(--text-pri); font-weight: 600; }
+
+.legal-intro {
+  font-size: 16px;
+  color: var(--text-sec);
+  line-height: 1.7;
+  margin-bottom: 8px;
+}
+
+/* ── Footer ──────────────────────────────────────── */
+footer {
+  border-top: 1px solid rgba(255,255,255,0.35);
+  padding: 32px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--text-dim);
+}
+
+footer a {
+  color: var(--text-sec);
+  text-decoration: none;
+  margin: 0 10px;
+}
+
+footer a:hover { color: var(--text-pri); }
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 640px) {
+  .legal-card { padding: 32px 24px; }
+  .legal-card h1 { font-size: 28px; }
+  .header-inner { padding: 0 20px; }
+}
