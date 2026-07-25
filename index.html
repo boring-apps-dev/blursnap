@@ -102,7 +102,7 @@
     nav {
       display: flex;
       align-items: center;
-      gap: 32px;
+      gap: 8px;
     }
 
     nav a {
@@ -112,6 +112,9 @@
       text-decoration: none;
       transition: color 0.15s;
     }
+
+    /* Bigger click target for the small text links — padding gives an invisible hit halo. */
+    nav a:not(.btn-buy-sm) { padding: 10px 12px; }
 
     nav a:hover { color: var(--text-pri); }
 
