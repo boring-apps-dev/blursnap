@@ -17,16 +17,19 @@
   <!-- Open Graph / social preview -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="BlurSnap">
-  <meta property="og:title" content="BlurSnap — Blur everything. Reveal only what matters.">
-  <meta property="og:description" content="Share screenshots fast — without leaking sensitive data. BlurSnap blurs everything the moment you capture; paint over just what you want to show.">
+  <!-- Em dashes are written as &#8212; entities on purpose: some OG parsers
+       (Bing's among them) ignore the declared charset and mangle raw UTF-8,
+       which would show garbled text in shared-link previews. -->
+  <meta property="og:title" content="BlurSnap &#8212; Blur everything. Reveal only what matters.">
+  <meta property="og:description" content="Share screenshots fast &#8212; without leaking sensitive data. BlurSnap blurs everything the moment you capture; paint over just what you want to show.">
   <meta property="og:url" content="https://blursnap.app/">
   <meta property="og:image" content="https://blursnap.app/og-image.png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta property="og:image:alt" content="BlurSnap editor with a blurred spreadsheet — only the important cells revealed.">
+  <meta property="og:image:alt" content="BlurSnap editor with a blurred spreadsheet &#8212; only the important cells revealed.">
   <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="BlurSnap — Blur everything. Reveal only what matters.">
-  <meta name="twitter:description" content="Share screenshots fast — without leaking sensitive data. A fast, private Windows screenshot tool.">
+  <meta name="twitter:title" content="BlurSnap &#8212; Blur everything. Reveal only what matters.">
+  <meta name="twitter:description" content="Share screenshots fast &#8212; without leaking sensitive data. A fast, private Windows screenshot tool.">
   <meta name="twitter:image" content="https://blursnap.app/og-image.png">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -756,7 +759,7 @@
         "description": "BlurSnap blurs your screenshot the moment you take it. Paint over what you want to show — everything else stays hidden.",
         "url": "https://blursnap.app/",
         "image": "https://blursnap.app/og-image.png",
-        "softwareVersion": "1.0",
+        "softwareVersion": "1.1.2",
         "offers": {
           "@type": "Offer",
           "price": "9.99",
