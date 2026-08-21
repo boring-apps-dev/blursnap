@@ -1,0 +1,259 @@
+/* Article/guide pages. Loaded on top of legal.css, which supplies the
+   colour tokens, header, footer and base typography. Everything here is
+   what a guide needs and a legal page does not. */
+
+/* Wider than the legal pages, with type scaled up to match: the line length
+   stays in a comfortable range instead of stretching to 110+ characters. */
+.article { max-width: 1000px; }
+.article .legal-card { padding: 52px 60px 44px; }
+
+.article .legal-card p,
+.article .legal-card li { font-size: 16.5px; line-height: 1.78; }
+.article .legal-card h1 { font-size: 38px; }
+
+.legal-card p.lead {
+  font-size: 19px;
+  color: var(--text-pri);
+  line-height: 1.65;
+  margin-bottom: 18px;
+}
+
+.legal-card h2 { font-size: 24px; margin: 40px 0 14px; letter-spacing: -0.3px; }
+.legal-card h2:first-of-type { margin-top: 30px; }
+.legal-card h3 { font-size: 17.5px; font-weight: 700; margin: 24px 0 8px; }
+
+.legal-card ol { margin: 0 0 14px 20px; }
+.legal-card ol li { font-size: 15px; color: var(--text-sec); line-height: 1.7; margin-bottom: 8px; }
+
+kbd {
+  font: 500 13px/1 'Inter', system-ui, sans-serif;
+  background: rgba(255,255,255,0.85);
+  border: 1px solid rgba(0,0,0,0.14);
+  border-bottom-width: 2px;
+  border-radius: 5px;
+  padding: 3px 6px;
+  white-space: nowrap;
+  color: var(--text-pri);
+}
+
+/* ── Pull-out note ───────────────────────────────── */
+.note {
+  background: rgba(255,255,255,0.5);
+  border-left: 3px solid var(--accent);
+  border-radius: 0 12px 12px 0;
+  padding: 16px 20px;
+  margin: 24px 0;
+}
+.note p:last-child { margin-bottom: 0; }
+
+/* ── Byline / meta ───────────────────────────────── */
+.article-meta {
+  font-size: 13px;
+  color: var(--text-dim);
+  margin-bottom: 28px;
+}
+
+/* ── Browser mock-up ─────────────────────────────── */
+/* Deliberately generic chrome: this illustrates the reader's own screen,
+   not any particular accounting product's interface. */
+.mock-wrap {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 18px;
+  margin: 28px 0 10px;
+}
+
+.mock {
+  background: #f4f6f9;
+  border: 1px solid rgba(0,0,0,0.12);
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 14px rgba(0,0,0,0.10);
+  font-size: 11px;
+  line-height: 1.45;
+  color: #2a3550;
+}
+
+.mock-tabs { display: flex; gap: 3px; padding: 6px 6px 0; background: #dfe4ec; }
+.mock-tab {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 5px 7px;
+  border-radius: 6px 6px 0 0;
+  background: #eef1f6;
+  color: #55617a;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mock-tab.active { background: #fff; color: #1a2030; font-weight: 600; }
+
+.mock-bar { display: flex; gap: 10px; padding: 6px 9px; background: #fff; border-bottom: 1px solid #e3e7ee; color: #6b7a92; }
+.mock-bar span { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+.mock-body { display: flex; min-height: 132px; background: #fff; }
+.mock-side { width: 34%; padding: 8px; background: #f7f9fc; border-right: 1px solid #e3e7ee; }
+.mock-side div { padding: 3px 0; color: #55617a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.mock-main { flex: 1; padding: 10px; }
+.mock-head { font-weight: 700; color: #1a2030; padding: 2px 0 6px; }
+.mock-total { margin-top: 6px; padding: 5px 0 2px; border-top: 1px solid #d7dde6; font-weight: 700; color: #1a2030; }
+.mock-head.pick, .mock-total.pick { background: #fffbe6; border-radius: 3px; }
+.mock-row { display: flex; justify-content: space-between; padding: 4px 0; border-bottom: 1px solid #eef1f6; color: #55617a; }
+.mock-row.pick { background: #fffbe6; font-weight: 700; color: #1a2030; }
+
+.mock-toast {
+  margin: 6px 8px 8px auto;
+  width: 62%;
+  padding: 6px 8px;
+  background: #fff;
+  border: 1px solid #e3e7ee;
+  border-radius: 7px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.10);
+  color: #55617a;
+}
+
+/* The "hidden" variant: everything is veiled except what was revealed. */
+.mock.hidden-demo .mock-tab,
+.mock.hidden-demo .mock-bar span,
+.mock.hidden-demo .mock-side div,
+.mock.hidden-demo .mock-row,
+.mock.hidden-demo .mock-head,
+.mock.hidden-demo .mock-total,
+.mock.hidden-demo .mock-toast { color: transparent; }
+
+.mock.hidden-demo .mock-tab,
+.mock.hidden-demo .mock-side div,
+.mock.hidden-demo .mock-head,
+.mock.hidden-demo .mock-total,
+.mock.hidden-demo .mock-toast { background-image: linear-gradient(90deg, #cdd5e0, #dbe1ea); border-radius: 4px; }
+
+.mock.hidden-demo .mock-bar span { background: #dbe1ea; border-radius: 4px; }
+.mock.hidden-demo .mock-row { background-image: linear-gradient(90deg, #d5dbe4, #e2e7ee); border-radius: 4px; margin-bottom: 2px; }
+/* The revealed spots: three of them, deliberately far apart. */
+.mock.hidden-demo .mock-row.pick,
+.mock.hidden-demo .mock-head.pick,
+.mock.hidden-demo .mock-total.pick { background: #fffbe6; background-image: none; color: #1a2030; }
+
+.mock-cap { font-size: 12px; color: var(--text-dim); text-align: center; margin-top: 8px; }
+
+/* ── Call to action ──────────────────────────────── */
+.cta {
+  margin: 36px 0 4px;
+  padding: 24px;
+  background: rgba(255,255,255,0.55);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  text-align: center;
+}
+.cta .btn {
+  display: inline-block;
+  margin-top: 14px;
+  padding: 13px 26px;
+  background: var(--accent);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.cta .btn:hover { background: var(--accent-hov); text-decoration: none; }
+.cta .fine { font-size: 13px; color: var(--text-dim); margin-top: 12px; margin-bottom: 0; }
+
+/* ── Guides index ────────────────────────────────── */
+.guide-list { list-style: none; margin: 0; padding: 0; }
+.guide-list li { margin: 0 0 14px; }
+.guide-list a {
+  display: block;
+  padding: 18px 20px;
+  background: rgba(255,255,255,0.45);
+  border: 1px solid var(--card-border);
+  border-radius: 14px;
+  text-decoration: none;
+  transition: background 0.15s;
+}
+.guide-list a:hover { background: rgba(255,255,255,0.7); text-decoration: none; }
+.guide-list strong { display: block; font-size: 17px; color: var(--text-pri); margin-bottom: 5px; }
+.guide-list span { font-size: 14px; color: var(--text-sec); line-height: 1.6; }
+
+/* ── Responsive ──────────────────────────────────── */
+@media (max-width: 720px) {
+  .mock-wrap { grid-template-columns: 1fr; }
+}
+
+@media (max-width: 860px) {
+  .article .legal-card { padding: 34px 26px 30px; }
+  .article .legal-card h1 { font-size: 29px; }
+}
+
+/* ═══════════════════════════════════════════════════
+   Mock-ups for articles 2-6.
+   Article 1's mock uses element-specific selectors; everything below
+   uses one generic mechanism instead — mark any element .v and it gets
+   veiled inside .hidden-demo, unless it is also .pick (revealed).
+   ═══════════════════════════════════════════════════ */
+
+.mock.hidden-demo .v {
+  color: transparent;
+  background-image: linear-gradient(90deg, #cdd5e0, #dbe1ea);
+  border-radius: 4px;
+}
+.mock.hidden-demo .v.pick {
+  color: #1a2030;
+  background-image: none;
+  background: #fffbe6;
+}
+
+/* ── Statement / document page (article 2) ───────── */
+.doc { background: #fff; }
+.doc-top {
+  display: flex; justify-content: space-between; gap: 10px;
+  padding: 8px 11px; background: #fff; border-bottom: 1px solid #e3e7ee;
+  font-weight: 600; color: #1a2030;
+}
+.doc-body { padding: 9px 11px 11px; }
+.doc-sub { color: #6b7a92; padding-bottom: 7px; }
+.doc-row {
+  display: flex; justify-content: space-between; gap: 8px;
+  padding: 4px 0; border-bottom: 1px solid #eef1f6; color: #55617a;
+}
+.doc-row span:first-child { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.doc-row.pick { background: #fffbe6; font-weight: 700; color: #1a2030; }
+.doc-total {
+  display: flex; justify-content: space-between;
+  margin-top: 6px; padding: 5px 0 2px; border-top: 1px solid #d7dde6;
+  font-weight: 700; color: #1a2030;
+}
+.doc-total.pick { background: #fffbe6; }
+
+/* ── CV, two columns (article 3) ─────────────────── */
+.cv-body { display: flex; min-height: 150px; background: #fff; }
+.cv-side { width: 36%; padding: 10px; background: #f7f9fc; border-right: 1px solid #e3e7ee; }
+.cv-photo { width: 34px; height: 34px; border-radius: 50%; background: #dbe1ea; margin-bottom: 8px; }
+.cv-side .l { display: block; padding: 3px 0; color: #55617a; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.cv-main { flex: 1; padding: 10px; }
+.cv-job { padding: 3px 0 6px; border-bottom: 1px solid #eef1f6; margin-bottom: 5px; }
+.cv-job b { display: block; color: #1a2030; }
+.cv-job .d { color: #8a97ab; }
+.cv-job .t { color: #55617a; }
+
+/* ── Chat / inbox window (article 5) ─────────────── */
+.chat-body { display: flex; min-height: 150px; background: #fff; }
+.chat-side { width: 40%; padding: 8px; background: #f7f9fc; border-right: 1px solid #e3e7ee; }
+.chat-conv { padding: 4px 0; border-bottom: 1px solid #eef1f6; }
+.chat-conv b { display: block; color: #1a2030; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-conv .pv { display: block; color: #8a97ab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.chat-main { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+.bubble { max-width: 80%; padding: 6px 9px; border-radius: 10px; background: #eef1f6; color: #55617a; }
+.bubble.me { align-self: flex-end; background: #e3edf7; }
+.bubble.pick { background: #fffbe6; color: #1a2030; }
+
+/* ── Comparison table (article 4) ────────────────── */
+.cmp-wrap { overflow-x: auto; margin: 20px 0 10px; }
+.cmp { width: 100%; border-collapse: collapse; font-size: 14.5px; }
+.cmp th, .cmp td {
+  text-align: left; padding: 10px 12px; vertical-align: top;
+  border-bottom: 1px solid var(--card-border); color: var(--text-sec); line-height: 1.55;
+}
+.cmp th { color: var(--text-pri); font-weight: 600; font-size: 12.5px; text-transform: uppercase; letter-spacing: 0.4px; }
+.cmp td:first-child { color: var(--text-pri); font-weight: 500; white-space: nowrap; }

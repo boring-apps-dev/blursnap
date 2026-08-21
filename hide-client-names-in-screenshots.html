@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>How to Blur Client Names in a Screenshot (Windows 10 &amp; 11)</title>
+  <meta name="description" content="Sending a client a screenshot? Other clients' names may be in the tab bar, the bookmarks or the sidebar. How to hide them on Windows — the free way and the fast way.">
+  <link rel="canonical" href="https://blursnap.app/hide-client-names-in-screenshots.html">
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/png" href="icon-64.png" sizes="64x64">
+  <link rel="apple-touch-icon" href="icon-180.png">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BlurSnap">
+  <meta property="og:title" content="How to Hide Client Names in a Screenshot">
+  <meta property="og:description" content="The names you didn&#8217;t mean to send are usually at the edges of the frame &#8212; tabs, bookmarks, notifications. Here&#8217;s how to deal with them on Windows.">
+  <meta property="og:url" content="https://blursnap.app/hide-client-names-in-screenshots.html">
+  <meta property="og:image" content="https://blursnap.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="How to Hide Client Names in a Screenshot">
+  <meta name="twitter:description" content="The names you didn&#8217;t mean to send are usually at the edges of the frame. Here&#8217;s how to deal with them on Windows.">
+  <meta name="twitter:image" content="https://blursnap.app/og-image.png">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="legal.css">
+  <link rel="stylesheet" href="article.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "How to Hide Client Names in a Screenshot",
+    "description": "Why client names end up in screenshots you send, what Windows can and cannot redact automatically, and how to make sure nothing extra ever makes it into the frame.",
+    "datePublished": "2026-08-20",
+    "dateModified": "2026-08-20",
+    "author": { "@type": "Organization", "name": "BoringApps" },
+    "publisher": { "@type": "Organization", "name": "BoringApps" },
+    "mainEntityOfPage": "https://blursnap.app/hide-client-names-in-screenshots.html"
+  }
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="icon-64.png" alt="" width="32" height="32"><span>BlurSnap</span>
+      </a>
+      <nav>
+        <a href="articles.html">&larr; All articles</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="legal article">
+    <div class="legal-card">
+      <h1>How to Hide Client Names in a Screenshot</h1>
+      <div class="article-meta">Written for bookkeepers &middot; Windows 10 &amp; 11 &middot; Updated August 2026</div>
+
+      <h2>The screenshot you meant to send — and everything else in the frame</h2>
+
+      <p class="lead">A client asks you to show them one line in a report. You open their books, find it,
+      take a screenshot, send it. The whole thing takes a minute.</p>
+
+      <p>Now look at that screenshot again — not at the middle, at the edges.</p>
+
+      <p>Along the top, a row of tabs, each one named after a different client. Below it, bookmarks,
+      also named. Off to the side, a list of everyone you work with. In the corner, a notification that
+      popped up while you were aiming — email, messenger, a work chat — with somebody's surname in it.
+      All of that is in the frame. All of that just went to a person who was supposed to see one line.</p>
+
+      <p>Nothing broke. Your software worked correctly and you did exactly what you set out to do.
+      <strong>There is simply always more on your screen than you are looking at</strong> — and a
+      screenshot does not know which part you were looking at.</p>
+
+      <div class="mock-wrap">
+        <div>
+          <div class="mock" role="img" aria-label="A browser window with tabs, bookmarks and a sidebar all naming different clients.">
+            <div class="mock-tabs">
+              <div class="mock-tab active">Riverton Dental</div>
+              <div class="mock-tab">Miller &amp; Sons</div>
+              <div class="mock-tab">Oakfield Café</div>
+            </div>
+            <div class="mock-bar"><span>&#9733; Kemp Logistics</span><span>&#9733; Bright Interiors</span><span>&#9733; Payroll Q3</span></div>
+            <div class="mock-body">
+              <div class="mock-side">
+                <div>Clients</div><div>Miller &amp; Sons</div><div>Oakfield Café</div><div>Kemp Logistics</div><div>Bright Interiors</div>
+              </div>
+              <div class="mock-main">
+                <div class="mock-head pick">September 2026 — reconciliation</div>
+                <div class="mock-row"><span>Miller &amp; Sons — invoices</span><span>4,120.00</span></div>
+                <div class="mock-row pick"><span>Adjustment</span><span>318.40</span></div>
+                <div class="mock-row"><span>Oakfield Café — retainer</span><span>1,980.00</span></div>
+                <div class="mock-row"><span>Kemp Logistics — bank fees</span><span>62.00</span></div>
+                <div class="mock-total pick">Closing balance &nbsp; 4,398.40</div>
+                <div class="mock-toast">New mail — Bright Interiors</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-cap">What you sent</div>
+        </div>
+        <div>
+          <div class="mock hidden-demo" role="img" aria-label="The same window with everything veiled except three separate spots: the period heading, one line in the middle of the list, and the closing balance.">
+            <div class="mock-tabs">
+              <div class="mock-tab active">Riverton Dental</div>
+              <div class="mock-tab">Miller &amp; Sons</div>
+              <div class="mock-tab">Oakfield Café</div>
+            </div>
+            <div class="mock-bar"><span>&#9733; Kemp Logistics</span><span>&#9733; Bright Interiors</span><span>&#9733; Payroll Q3</span></div>
+            <div class="mock-body">
+              <div class="mock-side">
+                <div>Clients</div><div>Miller &amp; Sons</div><div>Oakfield Café</div><div>Kemp Logistics</div><div>Bright Interiors</div>
+              </div>
+              <div class="mock-main">
+                <div class="mock-head pick">September 2026 — reconciliation</div>
+                <div class="mock-row"><span>Miller &amp; Sons — invoices</span><span>4,120.00</span></div>
+                <div class="mock-row pick"><span>Adjustment</span><span>318.40</span></div>
+                <div class="mock-row"><span>Oakfield Café — retainer</span><span>1,980.00</span></div>
+                <div class="mock-row"><span>Kemp Logistics — bank fees</span><span>62.00</span></div>
+                <div class="mock-total pick">Closing balance &nbsp; 4,398.40</div>
+                <div class="mock-toast">New mail — Bright Interiors</div>
+              </div>
+            </div>
+          </div>
+          <div class="mock-cap">What you meant to send</div>
+        </div>
+      </div>
+
+      <p>Note what had to stay visible on the right: the period at the top, one line in the middle of the
+      list, and the closing balance at the bottom. Three spots, far apart, with other people's business in
+      between them. That is the case cropping cannot solve — you would have to send three separate pictures,
+      and then nobody can see that they came from the same screen.</p>
+
+      <h2>What actually leaks</h2>
+
+      <p>The places that give away other people's names are nearly always the same ones:</p>
+
+      <ul>
+        <li><strong>Browser tab titles.</strong> You keep several clients open at once, and the tabs are
+        labelled with their names.</li>
+        <li><strong>The bookmarks bar.</strong> Shortcuts to each client's books, named so that
+        <em>you</em> can tell them apart — which means anyone looking can too.</li>
+        <li><strong>A client list inside the software.</strong> In QuickBooks Online Accountant that is the
+        <strong>Clients</strong> tab in the left-hand navigation, which lists everyone you work with.</li>
+        <li><strong>Pop-up notifications.</strong> Mail, messenger, calendar. They arrive on their own,
+        and always at the wrong moment.</li>
+        <li><strong>The taskbar and recent files.</strong> Document names very often contain a client's name.</li>
+        <li><strong>Your second monitor</strong>, if you capture the whole screen.</li>
+      </ul>
+
+      <h2>Why cropping isn't the answer</h2>
+
+      <p>The first instinct is to crop the extra parts away. Sometimes that works. Often it doesn't,
+      for two reasons.</p>
+
+      <p><strong>The context disappears.</strong> Your client needs to see not a bare number but the number
+      in its place — in its row, in its column, in the report. Crop too tightly and you end up explaining
+      in words what the picture was supposed to show.</p>
+
+      <p><strong>Usually the problem is inside, not at the edges.</strong> If the screen shows a list and you
+      need one line out of it, cropping won't get you there — the neighbouring rows are right against it.
+      That isn't something to crop. It's something to cover.</p>
+
+      <h2>The free way: Snipping Tool's built-in redaction</h2>
+
+      <p>On Windows 11 (build 24H2 and later) the Snipping Tool can strip out sensitive details on its own,
+      and hardly anyone knows it's there:</p>
+
+      <ol>
+        <li>Open the <strong>Snipping Tool</strong> from the Start menu.</li>
+        <li>Click <strong>New</strong> and drag across the part of the screen you want. The capture opens in
+        the Snipping Tool window, ready to work on.</li>
+        <li>Click <strong>Scan Text</strong> and let it read the text in the image.</li>
+        <li>Click <strong>Quick Redact</strong>. It immediately blacks out what it recognises as sensitive:
+        email addresses, phone numbers, card numbers.</li>
+        <li>Anything it missed — select the text by hand and choose <strong>Redact</strong>.</li>
+      </ol>
+
+      <p>This genuinely works, it's free, and if a card number wandered into your frame it is all you need.
+      If that's your situation, you can stop reading here.</p>
+
+      <h2>Why Quick Redact won't catch client names</h2>
+
+      <p>Now the limit — and it happens to be exactly our problem.</p>
+
+      <p><strong>Quick Redact looks for patterns.</strong> An email address has a recognisable shape. So does
+      a phone number. So does a card number. That is precisely why they can be found automatically.</p>
+
+      <p><strong>A client's name has no pattern.</strong> To the software, "Miller &amp; Sons Plumbing" is
+      ordinary text, no different from a column heading or a menu item. It cannot know that out of everything
+      on screen, this is the one thing that must not be shown. And it never will — there is nothing to
+      recognise here. Only you know it.</p>
+
+      <p>There's a second limit too: redaction works on text it managed to read. A client's logo, a label on
+      a chart, a handwritten signature in a scanned document — all of that stays.</p>
+
+      <p>So with names you are back to doing it by hand. And doing it by hand has exactly one problem:</p>
+
+      <div class="note">
+        <p><strong>You have to miss nothing.</strong> Six tabs, four bookmarks, the sidebar, the notification
+        that appeared while you were aiming. Overlook one spot and the rest of the work counts for nothing.
+        And you have to check again from scratch every time, because the screen is different every time.</p>
+      </div>
+
+      <h2>The other way round: hide everything, then reveal what you meant</h2>
+
+      <p>The idea is to turn the job around. Instead of "find and cover everything that shouldn't be there",
+      <strong>cover all of it at once, then reveal only the part you actually meant to show</strong>.</p>
+
+      <p>You capture the screen and the whole frame is already hidden. Then you brush over the one row your
+      client needs to see. Two or three spots scattered across the screen — three strokes. Everything else
+      stays hidden, because it was never revealed in the first place.</p>
+
+      <p>The difference isn't speed. It's <strong>what can go wrong</strong>. In the usual approach the mistake
+      is "I forgot to cover something", and it's a silent one: you find out after you've sent it. Turned around,
+      forgetting isn't possible — you aren't covering the extra, you're simply not revealing it. And if you do
+      slip, you see it immediately, because the thing you needed won't be visible.</p>
+
+      <p>Worth adding, without making a fuss about it: none of this leaves your computer. There is no cloud,
+      no account, no upload. For someone holding other people's financial data, that isn't a small detail.</p>
+
+      <h2>Can blurred text be recovered?</h2>
+
+      <p>A fair question, and it has a simple answer: <strong>try it yourself.</strong> Blur something in the
+      free trial and then try to undo it with whatever you can find online. No ordinary web tool will get it back.</p>
+
+      <p>What's hidden is baked into the pixels themselves. It isn't a layer sitting on top that can be peeled
+      away, and there is no original tucked inside the file — unlike a black rectangle drawn over a PDF or a
+      Word document, which comes off in seconds.</p>
+
+      <p>Anyone who would genuinely set out to reconstruct an image is someone who came for that specifically.
+      And if somebody has targeted you like that, a screenshot you sent is not your weakest point.</p>
+
+      <p>Even so, if a capture is going somewhere public, or to people you don't know, the app has a
+      <strong>frosted glass mode</strong>: hidden areas are replaced with a plain sheet instead of being blurred.
+      Then nothing in the file is derived from what was hidden at all.</p>
+
+      <h2>A 10-second check before you hit send</h2>
+
+      <p>Whatever tool you use, run your eyes along the edges before sending, not the middle:</p>
+
+      <ul>
+        <li>browser tabs;</li>
+        <li>the bookmarks bar;</li>
+        <li>the sidebar, and any list;</li>
+        <li>the notification corner;</li>
+        <li>the taskbar and the "recent" row;</li>
+        <li>your own user name and file path, if the address bar is visible.</li>
+      </ul>
+
+      <p>It sounds obvious, but that one glance along the edges catches almost everything.</p>
+
+      <h2>Same story in Xero, Sage, MYOB and the rest</h2>
+
+      <p>None of the above depends on what you keep the books in. In the US it's most often QuickBooks; in the
+      UK, Australia and New Zealand it's usually Xero, with MYOB and Sage alongside it; some people are on
+      FreshBooks or Wave. The client list, the tabs and the bookmarks look different everywhere, and the problem
+      is identical: <strong>what ends up in the frame is the part you weren't looking at.</strong></p>
+
+      <h2>Why I built this</h2>
+
+      <p>I'm not a bookkeeper. I built this for myself and for everyone else who runs into
+      the same thing every day.</p>
+
+      <p>The worst part was never the slip itself, it was what comes after. It's already sent. And instead of
+      working you're looking for whether you can still unsend it — in email, in a chat, wherever it
+      went — counting the minutes and hoping nobody has opened it yet. A few rounds of that were enough to make
+      me sit down and build something where the extra simply cannot get into the frame in the first place.</p>
+
+      <p><a href="why-i-built-blursnap.html">More about why I built BlurSnap &rarr;</a></p>
+
+      <p>If you're a bookkeeper and something here doesn't match how it actually works for you, write to me —
+      that's genuinely useful: <a href="mailto:support@blursnap.app">support@blursnap.app</a></p>
+
+      <!-- RELATED: re-enable each link only after that article is live on the site
+      <p>Related: <a href="blur-bank-statement.html">blurring a bank statement</a> and
+      <a href="redact-screenshot-windows.html">what Windows can already redact for free</a>.</p>
+      -->
+
+      <div class="cta">
+        <p><strong>BlurSnap</strong> is a Windows 10 and 11 app, available in the Microsoft Store.</p>
+        <a class="btn" href="https://apps.microsoft.com/detail/9NWTN48SG6K3">Get BlurSnap from Microsoft Store</a>
+        <p class="fine">Free 15-day trial, then a one-time $9.99 purchase — no subscription, no licence keys.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">Home</a>
+    <a href="articles.html">Articles</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <div style="margin-top:12px;">&copy; 2026 BoringApps. All rights reserved.</div>
+  </footer>
+
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e0156c7e4474e0494445b48694e15ca"}'></script>
+</body>
+</html>
