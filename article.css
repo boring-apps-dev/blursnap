@@ -161,7 +161,10 @@ kbd {
 .cta .fine { font-size: 13px; color: var(--text-dim); margin-top: 12px; margin-bottom: 0; }
 
 /* ── Guides index ────────────────────────────────── */
-.guide-list { list-style: none; margin: 0; padding: 0; }
+/* Scoped to .legal-card to outrank legal.css's `.legal-card ul { margin-left: 20px }`,
+   which is more specific than a bare .guide-list and was indenting the cards 20px
+   further from the left edge than from the right. */
+.legal-card .guide-list { list-style: none; margin: 0; padding: 0; }
 .guide-list li { margin: 0 0 14px; }
 .guide-list a {
   display: block;
@@ -184,6 +187,15 @@ kbd {
 @media (max-width: 860px) {
   .article .legal-card { padding: 34px 26px 30px; }
   .article .legal-card h1 { font-size: 29px; }
+}
+
+/* Three paddings nest on a phone — page gutter, then the card, then the guide
+   card inside it — and together they leave the text about 230px wide on a
+   390px screen. Tighten all three so the cards use the width they have. */
+@media (max-width: 600px) {
+  .article { padding: 0 14px; }
+  .article .legal-card { padding: 28px 16px 24px; }
+  .guide-list a { padding: 16px; }
 }
 
 /* ═══════════════════════════════════════════════════

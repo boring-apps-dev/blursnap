@@ -123,6 +123,42 @@
 
     nav a:hover { color: var(--text-pri); }
 
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    /* Burger — hidden until the links stop fitting; see the 860px block. */
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 40px;
+      height: 40px;
+      padding: 0;
+      border: none;
+      border-radius: 8px;
+      background: transparent;
+      cursor: pointer;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 20px;
+      height: 2px;
+      border-radius: 2px;
+      background: var(--text-pri);
+      transition: transform 0.2s, opacity 0.15s;
+    }
+
+    /* Bars fold into an X. The 7px shift is the 5px gap plus the 2px bar. */
+    header.nav-open .nav-toggle span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    header.nav-open .nav-toggle span:nth-child(2) { opacity: 0; }
+    header.nav-open .nav-toggle span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
     .btn-buy-sm {
       font-size: 14px;
       font-weight: 600;
@@ -137,6 +173,9 @@
     }
 
     .btn-buy-sm:hover { background: var(--accent-hov); }
+
+    /* Full wording by default; the phone block swaps in the short one. */
+    .cta-brief { display: none; }
 
     /* ── Layout container — single source of truth for content width ── */
     main {
@@ -715,15 +754,64 @@
       .alt-block.reverse { flex-direction: column; gap: 28px; }
     }
 
+    /* ── Responsive: burger nav ──────────────────────
+       Five text links plus the CTA stop fitting beside the logo well above the
+       phone breakpoint, so the burger takes over here rather than at 600px. */
+    @media (max-width: 860px) {
+      .nav-toggle { display: flex; }
+
+      .nav-links {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 0;
+        padding: 6px 32px 12px;
+        /* Near-opaque, and no backdrop-filter: at the header's own 0.92 the page
+           text underneath still ghosts through the menu (measured ~6% contrast
+           in the gaps between links, vs ~2% here). Behind a background this
+           solid a blur would have nothing left to show, so it is omitted. */
+        background: rgba(255,255,255,0.97);
+        border-bottom: 1px solid rgba(255,255,255,0.5);
+        box-shadow: 0 12px 24px rgba(26,32,48,0.10);
+        /* Closed with visibility, not display, so the panel can animate — and so
+           the links drop out of the tab order while it is shut. */
+        opacity: 0;
+        visibility: hidden;
+        transform: translateY(-8px);
+        pointer-events: none;
+        transition: opacity 0.18s, transform 0.18s, visibility 0.18s;
+      }
+
+      header.nav-open .nav-links {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+        pointer-events: auto;
+      }
+
+      .nav-links a:not(.btn-buy-sm) { padding: 14px 4px; font-size: 15px; }
+      .nav-links a + a { border-top: 1px solid rgba(26,32,48,0.08); }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .nav-links, .nav-toggle span { transition: none; }
+    }
+
     /* ── Responsive: phone ───────────────────────────── */
     @media (max-width: 600px) {
       main { padding: 0 18px; }
       section { padding: 56px 0; }
 
       .header-inner { padding: 0 18px; }
-      nav { gap: 14px; }
-      /* Keep only the CTA on phones — sections are reachable by scrolling */
-      nav a:not(.btn-buy-sm) { display: none; }
+      nav { gap: 6px; }
+      /* Panel gutters follow the header's own padding. */
+      .nav-links { padding: 6px 18px 12px; }
+      /* The full label plus the burger runs past the edge on a 360px phone. */
+      .cta-full { display: none; }
+      .cta-brief { display: inline; }
       .btn-buy-sm { padding: 8px 16px; }
 
       #hero { padding: 40px 0 52px; }
@@ -853,13 +941,19 @@
         <img src="icon-64.png" alt="" width="32" height="32" style="border-radius:7px;vertical-align:middle;margin-right:9px;box-shadow:0 2px 8px rgba(0,0,0,0.15);"><span style="position:relative;top:2px;">BlurSnap</span>
       </a>
       <nav>
-        <a href="#features">Features</a>
-        <a href="#how-it-works">How it works</a>
-        <a href="#pricing">Pricing</a>
-        <a href="#faq">FAQ</a>
-        <a href="articles.html">Articles</a>
+        <div class="nav-links" id="navLinks">
+          <a href="#features">Features</a>
+          <a href="#how-it-works">How it works</a>
+          <a href="#pricing">Pricing</a>
+          <a href="#faq">FAQ</a>
+          <a href="articles.html">Articles</a>
+        </div>
         <!-- TODO: replace with the real Microsoft Store listing URL once the app is reserved in Partner Center -->
-        <a href="https://apps.microsoft.com/detail/9NWTN48SG6K3" class="btn-buy-sm">Get it on Microsoft Store</a>
+        <a href="https://apps.microsoft.com/detail/9NWTN48SG6K3" class="btn-buy-sm"><span class="cta-full">Get it on Microsoft Store</span><span class="cta-brief">Get it</span></a>
+        <button type="button" class="nav-toggle" id="navToggle"
+                aria-label="Menu" aria-expanded="false" aria-controls="navLinks">
+          <span></span><span></span><span></span>
+        </button>
       </nav>
     </div>
   </header>
@@ -1348,6 +1442,44 @@
 
       window.addEventListener('resize', resize);
       resize();
+    })();
+
+    // Burger menu. The panel is CSS-driven; this only owns the open flag,
+    // and mirrors it onto aria-expanded for screen readers.
+    (function () {
+      var header = document.querySelector('header');
+      var toggle = document.getElementById('navToggle');
+      var links = document.getElementById('navLinks');
+      if (!header || !toggle || !links) return;
+
+      function setOpen(open) {
+        header.classList.toggle('nav-open', open);
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      }
+
+      toggle.addEventListener('click', function (e) {
+        e.stopPropagation();
+        setOpen(!header.classList.contains('nav-open'));
+      });
+
+      // Jumping to an anchor leaves the panel covering what you jumped to.
+      links.addEventListener('click', function (e) {
+        if (e.target.closest('a')) setOpen(false);
+      });
+
+      document.addEventListener('click', function (e) {
+        if (!header.contains(e.target)) setOpen(false);
+      });
+
+      document.addEventListener('keydown', function (e) {
+        if (e.key === 'Escape') setOpen(false);
+      });
+
+      // Rotating to landscape can cross the breakpoint while the panel is open,
+      // which would otherwise leave the desktop row stuck in its open styling.
+      window.addEventListener('resize', function () {
+        if (window.innerWidth > 860) setOpen(false);
+      });
     })();
   </script>
 
