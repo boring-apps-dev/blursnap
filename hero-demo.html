@@ -2,6 +2,12 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
+<!-- Internal asset, not a page: rendered inside an iframe on index.html (hero-demo)
+     or used only to shoot the OG image. Bing had indexed hero-demo.html as a
+     standalone result, which is thin duplicate junk. noindex via meta, NOT via
+     robots.txt — a Disallow would stop the crawler from ever seeing this tag,
+     leaving the already-indexed URL stuck in the index. -->
+<meta name="robots" content="noindex, nofollow">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>BlurSnap — animated hero</title>
 <style>
