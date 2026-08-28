@@ -80,10 +80,21 @@
       position: sticky;
       top: 0;
       z-index: 100;
+      border-bottom: 1px solid rgba(255,255,255,0.4);
+    }
+
+    /* The glass lives on a pseudo-element rather than on <header> itself. An element
+       with backdrop-filter becomes a backdrop root for everything inside it, so the
+       mobile menu panel — a descendant — would have had nothing left to blur and would
+       have shown the page text straight through. Same look, one level out of the way. */
+    header::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      z-index: -1;
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       background: var(--header-bg);
-      border-bottom: 1px solid rgba(255,255,255,0.4);
     }
 
     .header-inner {
@@ -769,13 +780,14 @@
         align-items: stretch;
         gap: 0;
         padding: 6px 32px 12px;
-        /* Near-opaque, and no backdrop-filter: at the header's own 0.92 the page
-           text underneath still ghosts through the menu (measured ~6% contrast
-           in the gaps between links, vs ~2% here). Behind a background this
-           solid a blur would have nothing left to show, so it is omitted. */
-        background: rgba(255,255,255,0.97);
-        border-bottom: 1px solid rgba(255,255,255,0.5);
-        box-shadow: 0 12px 24px rgba(26,32,48,0.10);
+        /* The header's glass, matched exactly: same tint, same blur radius, same
+           bottom hairline, and no shadow — so the open panel reads as the header
+           simply growing taller. Only works because the blur moved to header::before;
+           nested inside a backdrop root this would render as plain flat tint. */
+        background: var(--header-bg);
+        backdrop-filter: blur(16px);
+        -webkit-backdrop-filter: blur(16px);
+        border-bottom: 1px solid rgba(255,255,255,0.4);
         /* Closed with visibility, not display, so the panel can animate — and so
            the links drop out of the tab order while it is shut. */
         opacity: 0;
@@ -792,7 +804,9 @@
         pointer-events: auto;
       }
 
-      .nav-links a:not(.btn-buy-sm) { padding: 14px 4px; font-size: 15px; }
+      /* Type matches the desktop header exactly (14px / 500 / --text-sec, both
+         inherited from `nav a`). The generous padding stays — it is the tap target. */
+      .nav-links a:not(.btn-buy-sm) { padding: 14px 4px; font-size: 14px; }
       .nav-links a + a { border-top: 1px solid rgba(26,32,48,0.08); }
     }
 
@@ -809,10 +823,10 @@
       nav { gap: 6px; }
       /* Panel gutters follow the header's own padding. */
       .nav-links { padding: 6px 18px 12px; }
-      /* The full label plus the burger runs past the edge on a 360px phone. */
-      .cta-full { display: none; }
-      .cta-brief { display: inline; }
-      .btn-buy-sm { padding: 8px 16px; }
+      /* No store button in the header on phones: it crowded the logo and the burger,
+         and the hero's own full-size CTA sits just below it anyway. The .cta-brief
+         span is left in the markup so restoring this is a one-line change. */
+      .btn-buy-sm { display: none; }
 
       #hero { padding: 40px 0 52px; }
       .hero-title { font-size: 34px; letter-spacing: -1px; }
@@ -924,7 +938,12 @@
 </head>
 <body>
 
-  <!-- Signature "foggy window" blur overlay (desktop pointer only; JS removes it on touch / reduced-motion) -->
+  <!-- TEMPORARILY DISABLED 2026-08-28 — signature "foggy window" blur overlay.
+       Reason: early traffic did not go past the home page, so the extra interaction
+       step is off while we test a plainer first screen. To restore: uncomment below.
+       CSS (.fog / .fog-hint) and the JS both stay in place and are inert without these
+       nodes — the script bails out on `if (!fog) return;`.
+
   <div id="fog" class="fog" aria-hidden="true"></div>
   <div id="fogHint" class="fog-hint enter" aria-hidden="true">
     <p class="fog-hint-text"><b>Hold left-click</b> and paint to reveal</p>
@@ -933,6 +952,7 @@
       <button type="button" id="fogReset" class="ghost">Reset</button>
     </div>
   </div>
+  -->
 
   <!-- Header -->
   <header>
