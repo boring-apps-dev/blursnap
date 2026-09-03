@@ -31,9 +31,30 @@
   <meta name="twitter:title" content="BlurSnap &#8212; Blur everything. Reveal only what matters.">
   <meta name="twitter:description" content="Share screenshots fast &#8212; without leaking sensitive data. A fast, private Windows screenshot tool.">
   <meta name="twitter:image" content="https://blursnap.app/og-image.png">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    /* Inter, self-hosted. On the Google Fonts CDN this sat on the critical path: two
+       extra hosts, each costing DNS + TLS + a round trip, and the stylesheet had to
+       land before the font file was even requested. The hero paragraph is the LCP
+       element, so it waited on that whole chain. One variable file per subset covers
+       weights 400-700; only latin is preloaded, latin-ext is fetched on demand. */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(fonts/inter-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(fonts/inter-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+  </style>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -934,7 +955,6 @@
     ]
   }
   </script>
-  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.min.js"></script>
 </head>
 <body>
 
@@ -1006,49 +1026,116 @@
   <section id="features">
     <div class="section-label">Features</div>
     <div class="section-title">Everything you need, nothing you don't</div>
+    <!-- Icons are lucide (ISC), inlined at authoring time instead of built in the
+         browser. The UMD bundle cost ~100 KB over the wire from unpkg and, as a
+         synchronous cross-origin script in <head>, it held up the first paint;
+         these nine paths never change, so there is nothing to resolve at runtime. -->
     <div class="features-grid">
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="paintbrush"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-paintbrush" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m14.622 17.897-10.68-2.913" />
+            <path d="M18.376 2.622a1 1 0 1 1 3.002 3.002L17.36 9.643a.5.5 0 0 0 0 .707l.944.944a2.41 2.41 0 0 1 0 3.408l-.944.944a.5.5 0 0 1-.707 0L8.354 7.348a.5.5 0 0 1 0-.707l.944-.944a2.41 2.41 0 0 1 3.408 0l.944.944a.5.5 0 0 0 .707 0z" />
+            <path d="M9 8c-1.804 2.71-3.97 3.46-6.583 3.948a.507.507 0 0 0-.302.819l7.32 8.883a1 1 0 0 0 1.185.204C12.735 20.405 16 16.792 16 15" />
+          </svg>
+        </div>
         <div class="feature-title">Paint to reveal</div>
         <div class="feature-desc">Brush over the parts you want visible. Everything else stays blurred automatically.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="eye"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-eye" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M2.062 12.348a1 1 0 0 1 0-.696 10.75 10.75 0 0 1 19.876 0 1 1 0 0 1 0 .696 10.75 10.75 0 0 1-19.876 0" />
+            <circle cx="12" cy="12" r="3" />
+          </svg>
+        </div>
         <div class="feature-title">Hold to peek</div>
         <div class="feature-desc">Not sure what to reveal? Hold a key to see the original underneath, so you know exactly what to paint. Release, and it blurs back.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="undo-2"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-undo-2" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M9 14 4 9l5-5" />
+            <path d="M4 9h10.5a5.5 5.5 0 0 1 5.5 5.5a5.5 5.5 0 0 1-5.5 5.5H11" />
+          </svg>
+        </div>
         <div class="feature-title">Undo any stroke</div>
         <div class="feature-desc">Revealed a little too much? Ctrl+Z takes back the last stroke and Ctrl+Y puts it back. Nothing is final until you save.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="target"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-target" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="10" />
+            <circle cx="12" cy="12" r="6" />
+            <circle cx="12" cy="12" r="2" />
+          </svg>
+        </div>
         <div class="feature-title">One screen, many spots</div>
         <div class="feature-desc">Show a handful of details scattered across a busy screen, each one still in place and in context. Cropping them separately would mean several disconnected images.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="zap"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-zap" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M15.914 4a1.5 1.5 0 00-2.474-1.561l-9 9A1.5 1.5 0 005.5 14h4.002a.5.5 0 01.471.666L8.086 20a1.5 1.5 0 002.475 1.56l9-9A1.5 1.5 0 0018.5 10h-3.997a.5.5 0 01-.472-.667z" />
+          </svg>
+        </div>
         <div class="feature-title">Global hotkey</div>
         <div class="feature-desc">One shortcut captures the screen and opens the editor instantly. No clicks needed.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="clipboard-check"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-clipboard-check" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1" />
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2" />
+            <path d="m9 14 2 2 4-4" />
+          </svg>
+        </div>
         <div class="feature-title">Auto copy & save</div>
         <div class="feature-desc">The result is copied to clipboard and saved automatically when you're done.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="shield"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-shield" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M20 13c0 5-3.5 7.5-7.66 8.95a1 1 0 0 1-.67-.01C7.5 20.5 4 18 4 13V6a1 1 0 0 1 1-1c2 0 4.5-1.2 6.24-2.72a1.17 1.17 0 0 1 1.52 0C14.51 3.81 17 5 19 5a1 1 0 0 1 1 1z" />
+          </svg>
+        </div>
         <div class="feature-title">Privacy by default</div>
         <div class="feature-desc">Everything runs locally. No cloud, no uploads, no AI processing. Your screenshots never leave your machine.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="snowflake"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-snowflake" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="m10 20-1.25-2.5L6 18" />
+            <path d="M10 4 8.75 6.5 6 6" />
+            <path d="m14 20 1.25-2.5L18 18" />
+            <path d="m14 4 1.25 2.5L18 6" />
+            <path d="m17 21-3-6h-4" />
+            <path d="m17 3-3 6 1.5 3" />
+            <path d="M2 12h6.5L10 9" />
+            <path d="m20 10-1.5 2 1.5 2" />
+            <path d="M22 12h-6.5L14 15" />
+            <path d="m4 10 1.5 2L4 14" />
+            <path d="m7 21 3-6-1.5-3" />
+            <path d="m7 3 3 6h4" />
+          </svg>
+        </div>
         <div class="feature-title">Frosted glass</div>
         <div class="feature-desc">Sending a screenshot somewhere public? An optional mode replaces hidden areas with a plain sheet instead of blurring them.</div>
       </div>
       <div class="feature-card">
-        <div class="feature-icon"><i data-lucide="sliders-horizontal"></i></div>
+        <div class="feature-icon">
+          <svg class="lucide lucide-sliders-horizontal" xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M10 5H3" />
+            <path d="M12 19H3" />
+            <path d="M14 3v4" />
+            <path d="M16 17v4" />
+            <path d="M21 12h-9" />
+            <path d="M21 19h-5" />
+            <path d="M21 5h-7" />
+            <path d="M8 10v4" />
+            <path d="M8 12H3" />
+          </svg>
+        </div>
         <div class="feature-title">Customizable workflow</div>
         <div class="feature-desc">Set your hotkey, save folder, brush size, and blur intensity. Works exactly the way you want.</div>
       </div>
@@ -1217,7 +1304,6 @@
   </footer>
 
   <script>
-    if (window.lucide) lucide.createIcons();
     (function () {
       function scaleDemo() {
         document.querySelectorAll('.demo-frame').forEach(function (f) {
