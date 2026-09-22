@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snipping Tool Has No Blur — Here's What to Use Instead</title>
+  <meta name="description" content="There is no blur in the Snipping Tool and no update is bringing one. What it can cover instead, when a black block is the better answer anyway, and when it isn't.">
+  <link rel="canonical" href="https://blursnap.app/snipping-tool-blur.html">
+  <link rel="icon" href="favicon.ico" sizes="16x16 32x32 48x48">
+  <link rel="icon" type="image/png" href="icon-64.png" sizes="64x64">
+  <link rel="apple-touch-icon" href="icon-180.png">
+
+  <meta property="og:type" content="article">
+  <meta property="og:site_name" content="BlurSnap">
+  <meta property="og:title" content="Snipping Tool Has No Blur &#8212; Here&#8217;s What to Use Instead">
+  <meta property="og:description" content="No blur, no pixelate, and no update bringing one. What the Snipping Tool covers instead, and when a black block is the better answer anyway.">
+  <meta property="og:url" content="https://blursnap.app/snipping-tool-blur.html">
+  <meta property="og:image" content="https://blursnap.app/og-image.png">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Snipping Tool Has No Blur &#8212; Here&#8217;s What to Use Instead">
+  <meta name="twitter:description" content="No blur, no pixelate, and no update bringing one. What the Snipping Tool covers instead, and when a black block is the better answer anyway.">
+  <meta name="twitter:image" content="https://blursnap.app/og-image.png">
+
+  <link rel="preload" href="fonts/inter-latin.woff2" as="font" type="font/woff2" crossorigin>
+  <style>
+    /* Inter, self-hosted. On the Google Fonts CDN this sat on the critical path: two
+       extra hosts, each costing DNS + TLS + a round trip, and the stylesheet had to
+       land before the font file was even requested. The hero paragraph is the LCP
+       element, so it waited on that whole chain. One variable file per subset covers
+       weights 400-700; only latin is preloaded, latin-ext is fetched on demand. */
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(fonts/inter-latin.woff2) format('woff2');
+      unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+    }
+    @font-face {
+      font-family: 'Inter';
+      font-style: normal;
+      font-weight: 400 700;
+      font-display: swap;
+      src: url(fonts/inter-latin-ext.woff2) format('woff2');
+      unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+    }
+  </style>
+  <link rel="stylesheet" href="legal.css">
+  <link rel="stylesheet" href="article.css">
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "headline": "Snipping Tool Has No Blur — Here's What to Use Instead",
+    "description": "The Snipping Tool cannot blur or pixelate anything, and neither can Paint. What it covers things with instead, when a solid block is the right answer, and when the screenshot needs the softer treatment.",
+    "datePublished": "2026-09-22",
+    "author": { "@type": "Organization", "name": "BoringApps" },
+    "publisher": { "@type": "Organization", "name": "BoringApps" },
+    "mainEntityOfPage": "https://blursnap.app/snipping-tool-blur.html"
+  }
+  </script>
+</head>
+<body>
+
+  <header>
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <img src="icon-64.png" alt="" width="32" height="32"><span>BlurSnap</span>
+      </a>
+      <nav>
+        <a href="articles.html">&larr; All articles</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="legal article">
+    <div class="legal-card">
+      <h1>Snipping Tool Has No Blur &mdash; Here&#8217;s What to Use Instead</h1>
+      <div class="article-meta">Snipping Tool &middot; Windows 11 &middot; Published September 2026</div>
+
+      <h2>Is there a blur function in the Snipping Tool?</h2>
+
+      <p class="lead">No. There is no way to blur a line of text, no way to soften one area of the image, and
+      no pixelate or mosaic either &mdash; the tool has a pen, a highlighter, shapes, an eraser, a crop, and
+      the text tools behind the <strong>Scan Text</strong> button. Nothing in that list softens anything, and
+      no newer build adds it. (Nor did <strong>Snip &amp; Sketch</strong>, the older name for the same app,
+      despite people asking for a blur tool since those days.)</p>
+
+      <p>What it does have is three ways to <em>cover</em> something. <strong>Quick Redact</strong>, under Scan
+      Text, blacks out email addresses and phone numbers in one click &mdash; those two, and nothing else.
+      Any other readable text you can select and <strong>Redact</strong> by hand. And for what isn&#8217;t text
+      at all &mdash; a face, an avatar, a logo, a label inside a chart &mdash; a rectangle from
+      <strong>Shapes</strong> with the fill opacity turned up will do it. All three produce the same result: a
+      solid block.</p>
+
+      <h2>So the real question is whether a solid block will do</h2>
+
+      <p>Often it will, and then you are finished without installing anything.</p>
+
+      <div class="cmp-wrap">
+        <table class="cmp">
+          <thead>
+            <tr><th>What you&#8217;re hiding</th><th>Use</th><th>Why</th></tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>A card number, a PIN, a date of birth</td>
+              <td>Solid block</td>
+              <td>Short, and the possible values are countable. A blur is the wrong tool here, not a softer one.</td>
+            </tr>
+            <tr>
+              <td>One or two things on a clean screen</td>
+              <td>Solid block</td>
+              <td>Two bars read fine, and the Snipping Tool already does this for free.</td>
+            </tr>
+            <tr>
+              <td>A dozen things across a busy screen</td>
+              <td>Blur or a veil</td>
+              <td>Fifteen black bars make the picture unreadable, and make it look like a leaked document.</td>
+            </tr>
+            <tr>
+              <td>Anything going out publicly</td>
+              <td>Solid block or a flat veil</td>
+              <td>Neither is derived from what was underneath, so there is nothing to work back from.</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+
+      <p>The first row is the one worth knowing about, because it is the reason security writeups tell people
+      to stop blurring things altogether. <strong>A blur is a filter applied to the original pixels.</strong>
+      When the hidden thing is short and its possible values are countable &mdash; a four-digit code, a date,
+      a small sum &mdash; someone can render each candidate, blur it the same way and compare. That has been
+      demonstrated against real tools. For a card number, the black bar is not a compromise, it is the
+      correct answer.</p>
+
+      <p>The third row is why you went looking for a blur in the first place, and it is not a matter of taste.
+      A screenshot is worth sending because it still looks like the thing it came from &mdash; the layout, the
+      columns, the shape of the conversation. Cover a dozen items with black bars and that is gone: what
+      arrives is a redacted document, which reads as either alarming or unusable, and the recipient now has to
+      ask you what they are looking at. A veil keeps the page legible while the words in it are gone. For a
+      name, an address or a paragraph there is also no short list of candidates for anyone to compare
+      against.</p>
+
+      <h2>Windows has no blur anywhere, with one asterisk</h2>
+
+      <p>Paint has no blur either. The only blur that ships with Windows is in the <strong>Photos</strong>
+      app, and it is a <em>background</em> blur: built to find a person in a photograph and soften what is
+      behind them. There is a brush for correcting its guess, so you can technically push the mask onto a
+      block of text &mdash; but that means arguing with an automatic selection, using a soft round brush, in a
+      second app, on an already-saved file, for every screenshot you take. It exists. It is not an answer to
+      this.</p>
+
+      <h2>What is an answer</h2>
+
+      <p>Something made for screenshots rather than photographs. There are plenty of those, free and paid,
+      and any of them with a blur brush will cover the job.</p>
+
+      <p>But every one of them shares a habit with the two Windows routes above &mdash; with Quick Redact,
+      with the rectangle you draw by hand, with the Photos brush: <strong>each asks you to name the things
+      to hide, one at a time.</strong> That works for as long as you can list them. On a screenshot of a screen you will remember the
+      customer&#8217;s name, because you were looking straight at it &mdash; and not the other browser tab
+      titles, the bookmarks bar, the name in the account bubble in the corner, or the notification that
+      arrived while you were dragging the selection. Nothing warns you. The picture looks finished either
+      way.</p>
+
+      <p>So BlurSnap opens the capture with <strong>everything already hidden</strong>, and you brush over the
+      part you meant to show. There is no missed item, because you were never covering items. It also has a
+      frosted glass mode, which replaces the hidden area with a plain sheet instead of a blurred copy &mdash;
+      the same look, with nothing in the file derived from what it covers. It is $9.99 in the Microsoft Store
+      with a 15-day trial, and if your job is on the first two rows of the table above, you do not need it.</p>
+
+      <h2>Why I built this</h2>
+
+      <p>My own version of this started exactly where yours did: <strong>looking for a button that
+      wasn&#8217;t there.</strong> Down the toolbar twice, decide you must be blind, check whether the app
+      needs updating, give up and crop instead &mdash; which throws away the context that made the screenshot
+      worth sending.</p>
+
+      <p>You only go looking once or twice before you stop expecting it. What stays is the cropping
+      &mdash; throwing away the part that gave the screenshot its meaning, every single time, because the
+      only alternative on offer was to black out eleven things by hand and hope you didn&#8217;t miss the
+      twelfth. Not that hiding things is hard. It is that you are asked to do it backwards.</p>
+
+      <p><a href="why-i-built-blursnap.html">More about why I built BlurSnap &rarr;</a></p>
+
+      <p>If something here doesn&#8217;t match what you see on your machine &mdash; these apps do change
+      &mdash; tell me and I will fix it: <a href="mailto:support@blursnap.app">support@blursnap.app</a></p>
+
+      <p>Related, if you have a specific job in front of you:
+      <a href="hide-client-names-in-screenshots.html">client names</a>,
+      <a href="blur-bank-statement.html">bank statements</a>,
+      <a href="redact-cv-before-sending.html">CVs</a>.</p>
+
+      <div class="cta">
+        <p><strong>BlurSnap</strong> is a Windows 10 and 11 app, available in the Microsoft Store.</p>
+        <a class="btn" href="https://apps.microsoft.com/detail/9NWTN48SG6K3">Get BlurSnap from Microsoft Store</a>
+        <p class="fine">Free 15-day trial, then a one-time $9.99 purchase — no subscription, no licence keys.</p>
+      </div>
+
+    </div>
+  </main>
+
+  <footer>
+    <a href="index.html">Home</a>
+    <a href="articles.html">Articles</a>
+    <a href="privacy.html">Privacy Policy</a>
+    <a href="terms.html">Terms of Use</a>
+    <div style="margin-top:12px;">&copy; 2026 BoringApps. All rights reserved.</div>
+  </footer>
+
+  <script type='module' src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "2e0156c7e4474e0494445b48694e15ca"}'></script>
+</body>
+</html>

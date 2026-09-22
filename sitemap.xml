@@ -20,13 +20,13 @@
   </url>
   <url>
     <loc>https://blursnap.app/articles.html</loc>
-    <lastmod>2026-09-09</lastmod>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
   </url>
   <url>
     <loc>https://blursnap.app/hide-client-names-in-screenshots.html</loc>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -38,13 +38,19 @@
   </url>
   <url>
     <loc>https://blursnap.app/blur-bank-statement.html</loc>
-    <lastmod>2026-09-03</lastmod>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
     <loc>https://blursnap.app/redact-cv-before-sending.html</loc>
-    <lastmod>2026-09-09</lastmod>
+    <lastmod>2026-09-22</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://blursnap.app/snipping-tool-blur.html</loc>
+    <lastmod>2026-09-22</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.8</priority>
   </url>
