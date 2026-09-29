@@ -256,6 +256,8 @@ kbd {
 .chat-conv b { display: block; color: #1a2030; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-conv .pv { display: block; color: #8a97ab; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
 .chat-main { flex: 1; padding: 10px; display: flex; flex-direction: column; gap: 5px; }
+.chat-head { align-self: stretch; color: #1a2030; font-weight: 600; padding-bottom: 6px; border-bottom: 1px solid #eef1f6; }
+.chat-date { align-self: center; font-size: 12px; color: #8a97ab; padding: 1px 8px; border-radius: 9px; background: #f2f5f9; }
 .bubble { max-width: 80%; padding: 6px 9px; border-radius: 10px; background: #eef1f6; color: #55617a; }
 .bubble.me { align-self: flex-end; background: #e3edf7; }
 .bubble.pick { background: #fffbe6; color: #1a2030; }
